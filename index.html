@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Hydrostatic Pressure Calculator</title>
+    <title>Drilling Pressure Calculator</title>
 
     <style>
         body {
@@ -15,12 +16,12 @@
         }
 
         .container {
-            max-width: 500px;
+            max-width: 550px;
             margin: auto;
             background: white;
             padding: 25px;
             border-radius: 15px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
         }
 
         h1 {
@@ -32,6 +33,36 @@
             text-align: center;
             color: #666;
             margin-bottom: 25px;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+        }
+
+        .tab-button {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            background: #ddd;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .tab-button.active {
+            background: #222;
+            color: white;
+        }
+
+        .calculator {
+            display: none;
+        }
+
+        .calculator.active {
+            display: block;
         }
 
         label {
@@ -50,7 +81,7 @@
             font-size: 16px;
         }
 
-        button {
+        button.calculate {
             width: 100%;
             margin-top: 25px;
             padding: 13px;
@@ -62,7 +93,7 @@
             cursor: pointer;
         }
 
-        button:hover {
+        button.calculate:hover {
             background: #444;
         }
 
@@ -74,16 +105,30 @@
             text-align: center;
         }
 
+        .result-title {
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
         .pressure {
             font-size: 30px;
             font-weight: bold;
-            margin-top: 10px;
+        }
+
+        .secondary-result {
+            margin-top: 15px;
+            font-size: 18px;
         }
 
         .formula {
             margin-top: 15px;
             color: #555;
             font-size: 14px;
+        }
+
+        .error {
+            color: #b00020;
+            font-weight: bold;
         }
     </style>
 </head>
@@ -92,85 +137,320 @@
 
 <div class="container">
 
-    <h1>Hydrostatic Pressure</h1>
+    <h1>Drilling Pressure Calculator</h1>
 
     <div class="subtitle">
-        Drilling Calculator v1.0
+        Hydrostatic & FIT EMW
     </div>
 
-    <label for="mudWeight">
-        Mud Weight (ppg)
-    </label>
 
-    <input
-        type="number"
-        id="mudWeight"
-        placeholder="Contoh: 10"
-        step="0.01"
-    >
+    <!-- TAB BUTTONS -->
 
-    <label for="tvd">
-        TVD (ft)
-    </label>
+    <div class="tabs">
 
-    <input
-        type="number"
-        id="tvd"
-        placeholder="Contoh: 5000"
-        step="0.1"
-    >
+        <button
+            class="tab-button active"
+            onclick="showCalculator('hydrostatic', this)">
+            Hydrostatic
+        </button>
 
-    <button onclick="calculatePressure()">
-        CALCULATE
-    </button>
+        <button
+            class="tab-button"
+            onclick="showCalculator('fit', this)">
+            FIT EMW
+        </button>
 
-    <div class="result">
+    </div>
 
-        <div>Hydrostatic Pressure</div>
 
-        <div class="pressure" id="result">
-            0 psi
+    <!-- ========================= -->
+    <!-- HYDROSTATIC CALCULATOR -->
+    <!-- ========================= -->
+
+    <div id="hydrostatic" class="calculator active">
+
+        <label for="mudWeightHydro">
+            Mud Weight (ppg)
+        </label>
+
+        <input
+            type="number"
+            id="mudWeightHydro"
+            placeholder="Contoh: 10"
+            step="0.01"
+        >
+
+
+        <label for="tvdHydro">
+            TVD (ft)
+        </label>
+
+        <input
+            type="number"
+            id="tvdHydro"
+            placeholder="Contoh: 5000"
+            step="0.1"
+        >
+
+
+        <button
+            class="calculate"
+            onclick="calculateHydrostatic()">
+            CALCULATE
+        </button>
+
+
+        <div class="result">
+
+            <div class="result-title">
+                Hydrostatic Pressure
+            </div>
+
+            <div
+                class="pressure"
+                id="hydroResult">
+                0 psi
+            </div>
+
+            <div class="formula">
+                P = 0.052 × MW × TVD
+            </div>
+
         </div>
 
-        <div class="formula">
-            P = 0.052 × MW × TVD
+    </div>
+
+
+    <!-- ========================= -->
+    <!-- FIT EMW CALCULATOR -->
+    <!-- ========================= -->
+
+    <div id="fit" class="calculator">
+
+        <label for="mudWeightFIT">
+            Mud Weight (ppg)
+        </label>
+
+        <input
+            type="number"
+            id="mudWeightFIT"
+            placeholder="Contoh: 10"
+            step="0.01"
+        >
+
+
+        <label for="shoeTVD">
+            Shoe TVD (ft)
+        </label>
+
+        <input
+            type="number"
+            id="shoeTVD"
+            placeholder="Contoh: 5000"
+            step="0.1"
+        >
+
+
+        <label for="surfacePressure">
+            FIT Surface Pressure (psi)
+        </label>
+
+        <input
+            type="number"
+            id="surfacePressure"
+            placeholder="Contoh: 500"
+            step="0.1"
+        >
+
+
+        <button
+            class="calculate"
+            onclick="calculateFIT()">
+            CALCULATE FIT EMW
+        </button>
+
+
+        <div class="result">
+
+            <div class="result-title">
+                FIT EMW
+            </div>
+
+            <div
+                class="pressure"
+                id="fitResult">
+                0.00 ppg
+            </div>
+
+
+            <div
+                class="secondary-result"
+                id="shoePressure">
+                Pressure at Shoe: 0.00 psi
+            </div>
+
+
+            <div class="formula">
+                EMW = MW + Surface Pressure ÷
+                (0.052 × Shoe TVD)
+            </div>
+
         </div>
 
     </div>
 
 </div>
 
+
 <script>
 
-function calculatePressure() {
+    // =========================
+    // TAB SYSTEM
+    // =========================
 
-    // Ambil nilai dari input
-    let mudWeight = parseFloat(
-        document.getElementById("mudWeight").value
-    );
+    function showCalculator(calculatorId, button) {
 
-    let tvd = parseFloat(
-        document.getElementById("tvd").value
-    );
+        // Sembunyikan semua calculator
+        let calculators =
+            document.querySelectorAll(".calculator");
 
-    // Cek apakah input kosong
-    if (isNaN(mudWeight) || isNaN(tvd)) {
+        calculators.forEach(function(calculator) {
+            calculator.classList.remove("active");
+        });
 
-        document.getElementById("result").innerHTML =
-            "Masukkan nilai dulu bro!";
 
-        return;
+        // Matikan semua tombol tab
+        let buttons =
+            document.querySelectorAll(".tab-button");
+
+        buttons.forEach(function(btn) {
+            btn.classList.remove("active");
+        });
+
+
+        // Tampilkan calculator yang dipilih
+        document
+            .getElementById(calculatorId)
+            .classList.add("active");
+
+
+        // Aktifkan tombol
+        button.classList.add("active");
     }
 
-    // Rumus hydrostatic pressure
-    let pressure = 0.052 * mudWeight * tvd;
 
-    // Tampilkan hasil
-    document.getElementById("result").innerHTML =
-        pressure.toFixed(2) + " psi";
-}
+    // =========================
+    // HYDROSTATIC
+    // =========================
+
+    function calculateHydrostatic() {
+
+        let mudWeight =
+            parseFloat(
+                document.getElementById("mudWeightHydro").value
+            );
+
+        let tvd =
+            parseFloat(
+                document.getElementById("tvdHydro").value
+            );
+
+
+        if (
+            isNaN(mudWeight) ||
+            isNaN(tvd) ||
+            mudWeight <= 0 ||
+            tvd <= 0
+        ) {
+
+            document.getElementById("hydroResult").innerHTML =
+                '<span class="error">Input tidak valid</span>';
+
+            return;
+        }
+
+
+        let pressure =
+            0.052 * mudWeight * tvd;
+
+
+        document.getElementById("hydroResult").innerHTML =
+            pressure.toFixed(2) + " psi";
+    }
+
+
+    // =========================
+    // FIT EMW
+    // =========================
+
+    function calculateFIT() {
+
+        let mudWeight =
+            parseFloat(
+                document.getElementById("mudWeightFIT").value
+            );
+
+        let shoeTVD =
+            parseFloat(
+                document.getElementById("shoeTVD").value
+            );
+
+        let surfacePressure =
+            parseFloat(
+                document.getElementById("surfacePressure").value
+            );
+
+
+        // Validasi input
+        if (
+            isNaN(mudWeight) ||
+            isNaN(shoeTVD) ||
+            isNaN(surfacePressure) ||
+            mudWeight <= 0 ||
+            shoeTVD <= 0 ||
+            surfacePressure < 0
+        ) {
+
+            document.getElementById("fitResult").innerHTML =
+                '<span class="error">Input tidak valid</span>';
+
+            document.getElementById("shoePressure").innerHTML =
+                "Pressure at Shoe: --";
+
+            return;
+        }
+
+
+        // Hydrostatic pressure dari mud di shoe
+        let hydrostaticPressure =
+            0.052 * mudWeight * shoeTVD;
+
+
+        // Total pressure di shoe
+        let totalPressure =
+            hydrostaticPressure + surfacePressure;
+
+
+        // EMW FIT
+        let emw =
+            totalPressure /
+            (0.052 * shoeTVD);
+
+
+        // Tampilkan EMW
+        document.getElementById("fitResult").innerHTML =
+            emw.toFixed(2) + " ppg";
+
+
+        // Tampilkan total pressure di shoe
+        document.getElementById("shoePressure").innerHTML =
+            "Pressure at Shoe: " +
+            totalPressure.toFixed(2) +
+            " psi";
+    }
 
 </script>
 
 </body>
+
 </html>
