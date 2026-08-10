@@ -453,4 +453,174 @@
 
 </body>
 
+</html><!-- PORE PRESSURE EATON -->
+<div id="porePressureSection" class="calculator-section">
+
+    <h2>Pore Pressure - Eaton D-Exponent</h2>
+
+    <label>Overburden Gradient (psi/ft)</label>
+    <input type="number" id="obGradient"
+           placeholder="Contoh: 1.0" step="0.001">
+
+    <label>Normal Pore Pressure Gradient (psi/ft)</label>
+    <input type="number" id="normalGradient"
+           placeholder="Contoh: 0.465" step="0.001">
+
+    <label>Observed D-Exponent</label>
+    <input type="number" id="observedD"
+           placeholder="Contoh: 1.2" step="0.001">
+
+    <label>Normal D-Exponent</label>
+    <input type="number" id="normalD"
+           placeholder="Contoh: 1.0" step="0.001">
+
+    <label>TVD (ft)</label>
+    <input type="number" id="ppTVD"
+           placeholder="Contoh: 5000" step="0.1">
+
+    <label>Eaton Exponent</label>
+    <input type="number" id="eatonExponent"
+           value="1.2" step="0.1">
+
+    <button onclick="calculatePorePressure()">
+        CALCULATE PORE PRESSURE
+    </button>
+
+    <div id="porePressureResult" class="result-box">
+        <h3>Pore Pressure</h3>
+        <div id="ppGradient">0.000 psi/ft</div>
+        <div id="ppPpg">0.00 ppg</div>
+        <div id="ppPsi">0 psi</div>
+    </div>
+
+</div>
+</scrip>
+ <!-- Kartu Hasil Pore Pressure -->
+    <div class="result-card">
+        <h3>Pore Pressure</h3>
+        <p id="ppGradient">0.000 psi/ft</p>
+        <p id="ppPpg">0.00 ppg</p>
+        <p id="ppPsi">0 psi</p>
+    </div>
+
+    <!-- Tag <script> WAJIB ada agar kode JS tidak bocor ke layar -->
+    <script>
+        function parseInput(id) {
+            const el = document.getElementById(id);
+            if (!el) return NaN;
+            const val = el.value.replace(',', '.').trim();
+            return parseFloat(val);
+        }
+
+        function calculatePorePressure() {
+            const S = parseInput("obGradient");
+            const Pn = parseInput("normalGradient");
+            const d = parseInput("observedD");
+            const dn = parseInput("normalD");
+            const TVD = parseInput("ppTVD");
+            const exponent = parseInput("eatonExponent");
+
+            // Validasi input
+            if (
+                isNaN(S) ||
+                isNaN(Pn) ||
+                isNaN(d) ||
+                isNaN(dn) ||
+                isNaN(TVD) ||
+                isNaN(exponent)
+            ) {
+                alert("Bro, semua input harus diisi angka yang valid.");
+                return;
+            }
+
+            if (d <= 0 || dn <= 0 || TVD <= 0) {
+                alert("D-Exponent dan TVD harus lebih besar dari 0.");
+                return;
+            }
+
+            // Rumus Eaton D-Exponent: (d / dn)
+            const ppGradient = S - ((S - Pn) * Math.pow(d / dn, exponent));
+
+            // Konversi gradient ke ppg
+            const ppPpg = ppGradient / 0.052;
+
+            // Pore pressure dalam psi
+            const ppPsi = ppGradient * TVD;
+
+            // Tampilkan hasil
+            document.getElementById("ppGradient").innerText =
+                ppGradient.toFixed(4) + " psi/ft";
+
+            document.getElementById("ppPpg").innerText =
+                ppPpg.toFixed(2) + " ppg";
+
+            document.getElementById("ppPsi").innerText =
+                Math.round(ppPsi) + " psi";
+        }
+    </script>
+</body>
 </html>
+<style> .calculator-section {
+    margin-top: 25px;
+    padding: 25px;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+}
+
+.calculator-section h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.calculator-section label {
+    display: block;
+    margin-top: 15px;
+    margin-bottom: 6px;
+    font-weight: bold;
+}
+
+.calculator-section input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-sizing: border-box;
+}
+
+.calculator-section button {
+    width: 100%;
+    margin-top: 20px;
+    padding: 14px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.result-box {
+    margin-top: 20px;
+    padding: 20px;
+    text-align: center;
+    background: #f1f7fb;
+    border-radius: 12px;
+}
+
+.result-box h3 {
+    margin-top: 0;
+}
+
+#ppGradient {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+#ppPpg {
+    font-size: 28px;
+    font-weight: bold;
+    margin-top: 8px;
+}
+
+#ppPsi {
+    margin-top: 8px;
+}
