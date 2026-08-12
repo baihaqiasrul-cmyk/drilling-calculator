@@ -491,19 +491,12 @@
         <div id="ppGradient">0.000 psi/ft</div>
         <div id="ppPpg">0.00 ppg</div>
         <div id="ppPsi">0 psi</div>
-    </div>
+    </div> 
 
 </div>
 </scrip>
- <!-- Kartu Hasil Pore Pressure -->
-    <div class="result-card">
-        <h3>Pore Pressure</h3>
-        <p id="ppGradient">0.000 psi/ft</p>
-        <p id="ppPpg">0.00 ppg</p>
-        <p id="ppPsi">0 psi</p>
-    </div>
 
-    <!-- Tag <script> WAJIB ada agar kode JS tidak bocor ke layar -->
+      <!-- Tag <script> WAJIB ada agar kode JS tidak bocor ke layar -->
     <script>
         function parseInput(id) {
             const el = document.getElementById(id);
@@ -808,3 +801,340 @@
 
 </body>
 </html>
+<div class="container" style="margin-top:20px;">
+    <div class="card">
+
+        <h2>Rate of Penetration (ROP) Calculator</h2>
+
+        <!-- START DEPTH -->
+        <label for="ropStartDepth">
+            Start Depth
+        </label>
+
+        <input
+            type="number"
+            id="ropStartDepth"
+            step="any"
+            placeholder="Contoh: 5000"
+        >
+
+        <!-- END DEPTH -->
+        <label for="ropEndDepth">
+            End Depth
+        </label>
+
+        <input
+            type="number"
+            id="ropEndDepth"
+            step="any"
+            placeholder="Contoh: 5100"
+        >
+
+        <!-- DEPTH UNIT -->
+        <label for="ropDepthUnit">
+            Depth Unit
+        </label>
+
+        <select
+            id="ropDepthUnit"
+            style="
+                width:100%;
+                padding:10px 14px;
+                border:1px solid #d1d5db;
+                border-radius:8px;
+                font-size:0.95rem;
+            "
+        >
+            <option value="ft">ft</option>
+            <option value="m">m</option>
+        </select>
+
+        <!-- DRILLING TIME -->
+        <label for="ropTime">
+            Drilling Time
+        </label>
+
+        <input
+            type="number"
+            id="ropTime"
+            step="any"
+            placeholder="Contoh: 2"
+        >
+
+        <!-- TIME UNIT -->
+        <label for="ropTimeUnit">
+            Time Unit
+        </label>
+
+        <select
+            id="ropTimeUnit"
+            style="
+                width:100%;
+                padding:10px 14px;
+                border:1px solid #d1d5db;
+                border-radius:8px;
+                font-size:0.95rem;
+            "
+        >
+            <option value="hr">hour (hr)</option>
+            <option value="min">minute (min)</option>
+        </select>
+
+        <!-- CALCULATE BUTTON -->
+        <button onclick="calculateROP()">
+            CALCULATE ROP
+        </button>
+
+        <!-- RESULT -->
+        <div class="result-box">
+
+            <p>
+                Drilled Interval:
+                <strong id="ropInterval">
+                    0 ft
+                </strong>
+            </p>
+
+            <p>
+                ROP:
+                <strong id="ropFtHr">
+                    0.00 ft/hr
+                </strong>
+            </p>
+
+            <p>
+                ROP:
+                <strong id="ropFtMin">
+                    0.00 ft/min
+                </strong>
+            </p>
+
+            <p>
+                ROP:
+                <strong id="ropMHr">
+                    0.00 m/hr
+                </strong>
+            </p>
+
+            <p>
+                ROP:
+                <strong id="ropMMin">
+                    0.00 m/min
+                </strong>
+            </p>
+
+        </div>
+
+        <!-- FORMULA -->
+        <div
+            style="
+                margin-top:15px;
+                text-align:center;
+                color:#555;
+                font-size:0.85rem;
+            "
+        >
+            ROP = Drilled Interval / Drilling Time
+        </div>
+
+    </div>
+</div>
+
+
+<!-- ========================= -->
+<!-- ROP JAVASCRIPT -->
+<!-- ========================= -->
+
+<script>
+
+function calculateROP() {
+
+    // =========================
+    // GET INPUT
+    // =========================
+
+    const startDepth =
+        parseFloat(
+            document.getElementById("ropStartDepth").value
+        );
+
+    const endDepth =
+        parseFloat(
+            document.getElementById("ropEndDepth").value
+        );
+
+    const drillingTime =
+        parseFloat(
+            document.getElementById("ropTime").value
+        );
+
+    const depthUnit =
+        document.getElementById("ropDepthUnit").value;
+
+    const timeUnit =
+        document.getElementById("ropTimeUnit").value;
+
+
+    // =========================
+    // VALIDATION
+    // =========================
+
+    if (
+        isNaN(startDepth) ||
+        isNaN(endDepth) ||
+        isNaN(drillingTime)
+    ) {
+
+        alert(
+            "Bro, semua input harus diisi dengan angka yang valid."
+        );
+
+        return;
+    }
+
+
+    if (drillingTime <= 0) {
+
+        alert(
+            "Drilling Time harus lebih besar dari 0."
+        );
+
+        return;
+    }
+
+
+    // =========================
+    // DRILLED INTERVAL
+    // =========================
+
+    const drilledInterval =
+        Math.abs(endDepth - startDepth);
+
+
+    if (drilledInterval <= 0) {
+
+        alert(
+            "Start Depth dan End Depth tidak boleh sama."
+        );
+
+        return;
+    }
+
+
+    // =========================
+    // CONVERT DEPTH
+    // =========================
+
+    let intervalFt;
+    let intervalM;
+
+
+    if (depthUnit === "ft") {
+
+        intervalFt =
+            drilledInterval;
+
+        intervalM =
+            drilledInterval * 0.3048;
+
+    }
+
+    else {
+
+        intervalM =
+            drilledInterval;
+
+        intervalFt =
+            drilledInterval / 0.3048;
+
+    }
+
+
+    // =========================
+    // CONVERT TIME
+    // =========================
+
+    let timeHr;
+    let timeMin;
+
+
+    if (timeUnit === "hr") {
+
+        timeHr =
+            drillingTime;
+
+        timeMin =
+            drillingTime * 60;
+
+    }
+
+    else {
+
+        timeMin =
+            drillingTime;
+
+        timeHr =
+            drillingTime / 60;
+
+    }
+
+
+    // =========================
+    // CALCULATE ROP
+    // =========================
+
+    const ropFtHr =
+        intervalFt / timeHr;
+
+    const ropFtMin =
+        intervalFt / timeMin;
+
+    const ropMHr =
+        intervalM / timeHr;
+
+    const ropMMin =
+        intervalM / timeMin;
+
+
+    // =========================
+    // DISPLAY RESULT
+    // =========================
+
+    document.getElementById(
+        "ropInterval"
+    ).innerText =
+        drilledInterval.toFixed(2)
+        + " "
+        + depthUnit;
+
+
+    document.getElementById(
+        "ropFtHr"
+    ).innerText =
+        ropFtHr.toFixed(2)
+        + " ft/hr";
+
+
+    document.getElementById(
+        "ropFtMin"
+    ).innerText =
+        ropFtMin.toFixed(2)
+        + " ft/min";
+
+
+    document.getElementById(
+        "ropMHr"
+    ).innerText =
+        ropMHr.toFixed(2)
+        + " m/hr";
+
+
+    document.getElementById(
+        "ropMMin"
+    ).innerText =
+        ropMMin.toFixed(2)
+        + " m/min";
+
+}
+
+</script>
