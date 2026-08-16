@@ -1542,3 +1542,1308 @@ function calculatePressureConverter() {
 }
 
 </script>
+<!-- ========================================= -->
+<!-- COMPLETE DIRECTIONAL DRILLING CALCULATOR -->
+<!-- MINIMUM CURVATURE METHOD -->
+<!-- ========================================= -->
+
+<div class="container" style="margin-top:20px;">
+
+    <div class="card">
+
+        <h2>Directional Drilling Calculator</h2>
+
+        <p style="
+            text-align:center;
+            color:#666;
+            font-size:0.85rem;
+            margin-bottom:20px;
+        ">
+            Minimum Curvature Method
+        </p>
+
+
+        <!-- ================================ -->
+        <!-- REFERENCE AZIMUTH -->
+        <!-- ================================ -->
+
+        <label for="referenceAzimuth">
+            Reference / Target Azimuth (°)
+        </label>
+
+        <input
+            type="number"
+            id="referenceAzimuth"
+            step="any"
+            value="0"
+            placeholder="Contoh: 90"
+        >
+
+
+        <!-- ================================ -->
+        <!-- SURVEY TABLE -->
+        <!-- ================================ -->
+
+        <h3 style="
+            margin-top:25px;
+            margin-bottom:10px;
+            font-size:1rem;
+        ">
+            Survey Stations
+        </h3>
+
+
+        <div style="
+            overflow-x:auto;
+        ">
+
+            <table
+                id="ddSurveyTable"
+                style="
+                    width:100%;
+                    border-collapse:collapse;
+                    min-width:520px;
+                "
+            >
+
+                <thead>
+
+                    <tr>
+
+                        <th style="padding:8px;">
+                            MD (ft)
+                        </th>
+
+                        <th style="padding:8px;">
+                            Inc (°)
+                        </th>
+
+                        <th style="padding:8px;">
+                            Azi (°)
+                        </th>
+
+                        <th style="padding:8px;">
+                            Action
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody id="ddSurveyBody">
+
+                    <tr>
+
+                        <td>
+                            <input
+                                type="number"
+                                class="dd-md"
+                                step="any"
+                                value="0"
+                                placeholder="MD"
+                            >
+                        </td>
+
+                        <td>
+                            <input
+                                type="number"
+                                class="dd-inc"
+                                step="any"
+                                value="0"
+                                placeholder="Inc"
+                            >
+                        </td>
+
+                        <td>
+                            <input
+                                type="number"
+                                class="dd-azi"
+                                step="any"
+                                value="0"
+                                placeholder="Azi"
+                            >
+                        </td>
+
+                        <td>
+
+                            <button
+                                onclick="removeDDRow(this)"
+                                style="
+                                    width:auto;
+                                    margin-top:0;
+                                    padding:8px 12px;
+                                "
+                            >
+                                X
+                            </button>
+
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+
+        <!-- ================================ -->
+        <!-- ADD SURVEY -->
+        <!-- ================================ -->
+
+        <button
+            onclick="addDDRow()"
+            style="
+                background:#e5e7eb;
+                color:#111827;
+            "
+        >
+            + ADD SURVEY
+        </button>
+
+
+        <!-- ================================ -->
+        <!-- CALCULATE -->
+        <!-- ================================ -->
+
+        <button onclick="calculateDirectionalDrilling()">
+            CALCULATE DIRECTIONAL SURVEY
+        </button>
+
+
+        <!-- ================================ -->
+        <!-- FINAL RESULT -->
+        <!-- ================================ -->
+
+        <div class="result-box">
+
+            <p>
+                Total MD:
+                <strong id="ddTotalMD">
+                    0.00 ft
+                </strong>
+            </p>
+
+            <p>
+                TVD:
+                <strong id="ddTVD">
+                    0.00 ft
+                </strong>
+            </p>
+
+            <p>
+                Northing:
+                <strong id="ddNorth">
+                    0.00 ft
+                </strong>
+            </p>
+
+            <p>
+                Easting:
+                <strong id="ddEast">
+                    0.00 ft
+                </strong>
+            </p>
+
+            <p>
+                Vertical Section:
+                <strong id="ddVS">
+                    0.00 ft
+                </strong>
+            </p>
+
+            <p>
+                Closure Distance:
+                <strong id="ddClosureDistance">
+                    0.00 ft
+                </strong>
+            </p>
+
+            <p>
+                Closure Azimuth:
+                <strong id="ddClosureAzimuth">
+                    0.00°
+                </strong>
+            </p>
+
+            <p>
+                Final DLS:
+                <strong id="ddFinalDLS">
+                    0.00 °/100 ft
+                </strong>
+            </p>
+
+        </div>
+
+
+        <!-- ================================ -->
+        <!-- DIRECTIONAL RESULT TABLE -->
+        <!-- ================================ -->
+
+        <h3 style="
+            margin-top:25px;
+            margin-bottom:10px;
+            font-size:1rem;
+        ">
+            Directional Survey Results
+        </h3>
+
+
+        <div style="
+            overflow-x:auto;
+        ">
+
+            <table
+                style="
+                    width:100%;
+                    border-collapse:collapse;
+                    min-width:1100px;
+                    font-size:0.82rem;
+                "
+            >
+
+                <thead>
+
+                    <tr>
+
+                        <th style="padding:8px;">
+                            MD
+                        </th>
+
+                        <th style="padding:8px;">
+                            Inc
+                        </th>
+
+                        <th style="padding:8px;">
+                            Azi
+                        </th>
+
+                        <th style="padding:8px;">
+                            ΔMD
+                        </th>
+
+                        <th style="padding:8px;">
+                            TVD
+                        </th>
+
+                        <th style="padding:8px;">
+                            N/S
+                        </th>
+
+                        <th style="padding:8px;">
+                            E/W
+                        </th>
+
+                        <th style="padding:8px;">
+                            VS
+                        </th>
+
+                        <th style="padding:8px;">
+                            Dogleg
+                        </th>
+
+                        <th style="padding:8px;">
+                            RF
+                        </th>
+
+                        <th style="padding:8px;">
+                            DLS
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody id="ddResultBody">
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+
+        <!-- ================================ -->
+        <!-- FORMULA -->
+        <!-- ================================ -->
+
+        <div style="
+            margin-top:20px;
+            padding:15px;
+            background:#f9fafb;
+            border-radius:10px;
+            color:#555;
+            font-size:0.78rem;
+            line-height:1.7;
+        ">
+
+            <strong>Minimum Curvature:</strong><br>
+
+            Dogleg Angle:
+            β = acos[
+            cos(I₁)cos(I₂)
+            +
+            sin(I₁)sin(I₂)cos(ΔAz)
+            ]
+
+            <br>
+
+            Ratio Factor:
+            RF =
+            (2 / β) × tan(β / 2)
+
+            <br>
+
+            DLS =
+            Dogleg Angle / ΔMD × 100
+
+            <br>
+
+            Closure Distance =
+            √(North² + East²)
+
+            <br>
+
+            Closure Azimuth =
+            atan2(East, North)
+
+        </div>
+
+    </div>
+
+</div>
+<script>
+
+// =============================================
+// ADD DIRECTIONAL SURVEY ROW
+// =============================================
+
+function addDDRow() {
+
+    const tbody =
+        document.getElementById("ddSurveyBody");
+
+    const row =
+        document.createElement("tr");
+
+
+    row.innerHTML = `
+
+        <td>
+
+            <input
+                type="number"
+                class="dd-md"
+                step="any"
+                placeholder="MD"
+            >
+
+        </td>
+
+
+        <td>
+
+            <input
+                type="number"
+                class="dd-inc"
+                step="any"
+                placeholder="Inc"
+            >
+
+        </td>
+
+
+        <td>
+
+            <input
+                type="number"
+                class="dd-azi"
+                step="any"
+                placeholder="Azi"
+            >
+
+        </td>
+
+
+        <td>
+
+            <button
+                onclick="removeDDRow(this)"
+                style="
+                    width:auto;
+                    margin-top:0;
+                    padding:8px 12px;
+                "
+            >
+                X
+            </button>
+
+        </td>
+
+    `;
+
+
+    tbody.appendChild(row);
+
+}
+
+
+
+// =============================================
+// REMOVE SURVEY ROW
+// =============================================
+
+function removeDDRow(button) {
+
+    const tbody =
+        document.getElementById("ddSurveyBody");
+
+
+    if (tbody.rows.length <= 1) {
+
+        alert(
+            "Minimal harus ada 1 survey station."
+        );
+
+        return;
+    }
+
+
+    button
+        .closest("tr")
+        .remove();
+
+}
+
+
+
+// =============================================
+// NORMALIZE AZIMUTH
+// =============================================
+
+function normalizeAzimuth(angle) {
+
+    angle =
+        angle % 360;
+
+
+    if (angle < 0) {
+
+        angle += 360;
+
+    }
+
+
+    return angle;
+
+}
+
+
+
+// =============================================
+// MINIMUM CURVATURE
+// =============================================
+
+function calculateDirectionalDrilling() {
+
+
+    // =========================================
+    // GET REFERENCE AZIMUTH
+    // =========================================
+
+    const referenceAzimuth =
+        parseFloat(
+            document.getElementById(
+                "referenceAzimuth"
+            ).value
+        );
+
+
+    if (
+        isNaN(referenceAzimuth) ||
+        referenceAzimuth < 0 ||
+        referenceAzimuth >= 360
+    ) {
+
+        alert(
+            "Reference / Target Azimuth harus 0° sampai <360°."
+        );
+
+        return;
+    }
+
+
+
+    // =========================================
+    // GET SURVEY INPUT
+    // =========================================
+
+    const mdInputs =
+        document.querySelectorAll(".dd-md");
+
+    const incInputs =
+        document.querySelectorAll(".dd-inc");
+
+    const aziInputs =
+        document.querySelectorAll(".dd-azi");
+
+
+    let surveys = [];
+
+
+
+    // =========================================
+    // READ DATA
+    // =========================================
+
+    for (
+        let i = 0;
+        i < mdInputs.length;
+        i++
+    ) {
+
+
+        const md =
+            parseFloat(
+                mdInputs[i].value
+            );
+
+
+        const inc =
+            parseFloat(
+                incInputs[i].value
+            );
+
+
+        const azi =
+            parseFloat(
+                aziInputs[i].value
+            );
+
+
+        // -------------------------------------
+        // VALIDATION
+        // -------------------------------------
+
+        if (
+            isNaN(md) ||
+            isNaN(inc) ||
+            isNaN(azi)
+        ) {
+
+            alert(
+                "Bro, semua survey harus diisi angka yang valid."
+            );
+
+            return;
+        }
+
+
+        if (md < 0) {
+
+            alert(
+                "MD tidak boleh negatif."
+            );
+
+            return;
+        }
+
+
+        if (
+            inc < 0 ||
+            inc > 180
+        ) {
+
+            alert(
+                "Inclination harus antara 0° sampai 180°."
+            );
+
+            return;
+        }
+
+
+        if (
+            azi < 0 ||
+            azi >= 360
+        ) {
+
+            alert(
+                "Azimuth harus antara 0° sampai <360°."
+            );
+
+            return;
+        }
+
+
+        surveys.push({
+
+            md: md,
+            inc: inc,
+            azi: azi
+
+        });
+
+    }
+
+
+
+    // =========================================
+    // SORT BY MD
+    // =========================================
+
+    surveys.sort(
+        function(a, b) {
+
+            return a.md - b.md;
+
+        }
+    );
+
+
+
+    // =========================================
+    // CHECK MD
+    // =========================================
+
+    for (
+        let i = 1;
+        i < surveys.length;
+        i++
+    ) {
+
+        if (
+            surveys[i].md <=
+            surveys[i - 1].md
+        ) {
+
+            alert(
+                "MD harus meningkat dan tidak boleh sama."
+            );
+
+            return;
+        }
+
+    }
+
+
+
+    // =========================================
+    // INITIAL POSITION
+    // =========================================
+
+    let tvd = 0;
+
+    let north = 0;
+
+    let east = 0;
+
+
+
+    // =========================================
+    // RESULT TABLE
+    // =========================================
+
+    const resultBody =
+        document.getElementById(
+            "ddResultBody"
+        );
+
+
+    resultBody.innerHTML = "";
+
+
+
+    // =========================================
+    // FIRST STATION
+    // =========================================
+
+    const first =
+        surveys[0];
+
+
+    const firstRow =
+        document.createElement("tr");
+
+
+    firstRow.innerHTML = `
+
+        <td>${first.md.toFixed(2)}</td>
+
+        <td>${first.inc.toFixed(2)}</td>
+
+        <td>${first.azi.toFixed(2)}</td>
+
+        <td>0.00</td>
+
+        <td>0.00</td>
+
+        <td>0.00 N</td>
+
+        <td>0.00 E</td>
+
+        <td>0.00</td>
+
+        <td>0.00°</td>
+
+        <td>1.000000</td>
+
+        <td>0.00</td>
+
+    `;
+
+
+    resultBody.appendChild(
+        firstRow
+    );
+
+
+
+    // =========================================
+    // STORE FINAL DLS
+    // =========================================
+
+    let finalDLS = 0;
+
+
+
+    // =========================================
+    // CALCULATE EACH INTERVAL
+    // =========================================
+
+    for (
+        let i = 1;
+        i < surveys.length;
+        i++
+    ) {
+
+
+        const previous =
+            surveys[i - 1];
+
+
+        const current =
+            surveys[i];
+
+
+
+        // =====================================
+        // DELTA MD
+        // =====================================
+
+        const deltaMD =
+            current.md -
+            previous.md;
+
+
+
+        // =====================================
+        // CONVERT DEGREE → RADIAN
+        // =====================================
+
+        const inc1 =
+            previous.inc *
+            Math.PI / 180;
+
+
+        const inc2 =
+            current.inc *
+            Math.PI / 180;
+
+
+        const azi1 =
+            previous.azi *
+            Math.PI / 180;
+
+
+        const azi2 =
+            current.azi *
+            Math.PI / 180;
+
+
+
+        // =====================================
+        // DOGLEG ANGLE
+        // =====================================
+
+        let doglegCos =
+
+            Math.cos(inc1) *
+            Math.cos(inc2)
+
+            +
+
+            Math.sin(inc1) *
+            Math.sin(inc2) *
+            Math.cos(
+                azi2 - azi1
+            );
+
+
+        // Floating point protection
+
+        doglegCos =
+            Math.max(
+                -1,
+                Math.min(
+                    1,
+                    doglegCos
+                )
+            );
+
+
+        const beta =
+            Math.acos(
+                doglegCos
+            );
+
+
+
+        // =====================================
+        // RATIO FACTOR
+        // =====================================
+
+        let RF = 1;
+
+
+        if (
+            Math.abs(beta) >
+            1e-10
+        ) {
+
+            RF =
+                (2 / beta) *
+                Math.tan(
+                    beta / 2
+                );
+
+        }
+
+
+
+        // =====================================
+        // TVD INCREMENT
+        // =====================================
+
+        const deltaTVD =
+
+            (
+                deltaMD / 2
+            )
+
+            *
+
+            (
+                Math.cos(inc1) +
+                Math.cos(inc2)
+            )
+
+            *
+
+            RF;
+
+
+
+        // =====================================
+        // NORTHING INCREMENT
+        // =====================================
+
+        const deltaNorth =
+
+            (
+                deltaMD / 2
+            )
+
+            *
+
+            (
+                Math.sin(inc1) *
+                Math.cos(azi1)
+
+                +
+
+                Math.sin(inc2) *
+                Math.cos(azi2)
+            )
+
+            *
+
+            RF;
+
+
+
+        // =====================================
+        // EASTING INCREMENT
+        // =====================================
+
+        const deltaEast =
+
+            (
+                deltaMD / 2
+            )
+
+            *
+
+            (
+                Math.sin(inc1) *
+                Math.sin(azi1)
+
+                +
+
+                Math.sin(inc2) *
+                Math.sin(azi2)
+            )
+
+            *
+
+            RF;
+
+
+
+        // =====================================
+        // UPDATE POSITION
+        // =====================================
+
+        tvd +=
+            deltaTVD;
+
+
+        north +=
+            deltaNorth;
+
+
+        east +=
+            deltaEast;
+
+
+
+        // =====================================
+        // DOGLEG DEGREE
+        // =====================================
+
+        const doglegDegrees =
+            beta *
+            180 /
+            Math.PI;
+
+
+
+        // =====================================
+        // DLS
+        // =====================================
+
+        const dls =
+
+            (
+                doglegDegrees /
+                deltaMD
+            )
+
+            *
+
+            100;
+
+
+        finalDLS =
+            dls;
+
+
+
+        // =====================================
+        // NORTH / SOUTH LABEL
+        // =====================================
+
+        const nsLabel =
+            north >= 0
+                ? "N"
+                : "S";
+
+
+        const ewLabel =
+            east >= 0
+                ? "E"
+                : "W";
+
+
+
+        // =====================================
+        // CREATE RESULT ROW
+        // =====================================
+
+        const row =
+            document.createElement("tr");
+
+
+        row.innerHTML = `
+
+            <td>
+                ${current.md.toFixed(2)}
+            </td>
+
+            <td>
+                ${current.inc.toFixed(2)}
+            </td>
+
+            <td>
+                ${current.azi.toFixed(2)}
+            </td>
+
+            <td>
+                ${deltaMD.toFixed(2)}
+            </td>
+
+            <td>
+                ${tvd.toFixed(2)}
+            </td>
+
+            <td>
+                ${Math.abs(north).toFixed(2)}
+                ${nsLabel}
+            </td>
+
+            <td>
+                ${Math.abs(east).toFixed(2)}
+                ${ewLabel}
+            </td>
+
+            <td>
+                ${calculateVS(
+                    north,
+                    east,
+                    referenceAzimuth
+                ).toFixed(2)}
+            </td>
+
+            <td>
+                ${doglegDegrees.toFixed(4)}°
+            </td>
+
+            <td>
+                ${RF.toFixed(6)}
+            </td>
+
+            <td>
+                ${dls.toFixed(4)}
+            </td>
+
+        `;
+
+
+        resultBody.appendChild(
+            row
+        );
+
+    }
+
+
+
+    // =========================================
+    // FINAL RESULTS
+    // =========================================
+
+    const last =
+        surveys[
+            surveys.length - 1
+        ];
+
+
+
+    // =========================================
+    // CLOSURE DISTANCE
+    // =========================================
+
+    const closureDistance =
+
+        Math.sqrt(
+
+            Math.pow(
+                north,
+                2
+            )
+
+            +
+
+            Math.pow(
+                east,
+                2
+            )
+
+        );
+
+
+
+    // =========================================
+    // CLOSURE AZIMUTH
+    // =========================================
+
+    let closureAzimuth =
+
+        Math.atan2(
+            east,
+            north
+        )
+
+        *
+
+        180 /
+        Math.PI;
+
+
+    closureAzimuth =
+        normalizeAzimuth(
+            closureAzimuth
+        );
+
+
+
+    // =========================================
+    // FINAL VS
+    // =========================================
+
+    const verticalSection =
+        calculateVS(
+            north,
+            east,
+            referenceAzimuth
+        );
+
+
+
+    // =========================================
+    // DISPLAY FINAL RESULTS
+    // =========================================
+
+    document.getElementById(
+        "ddTotalMD"
+    ).innerText =
+
+        last.md.toFixed(2)
+        + " ft";
+
+
+
+    document.getElementById(
+        "ddTVD"
+    ).innerText =
+
+        tvd.toFixed(2)
+        + " ft";
+
+
+
+    document.getElementById(
+        "ddNorth"
+    ).innerText =
+
+        Math.abs(north).toFixed(2)
+        +
+
+        (
+            north >= 0
+                ? " ft N"
+                : " ft S"
+        );
+
+
+
+    document.getElementById(
+        "ddEast"
+    ).innerText =
+
+        Math.abs(east).toFixed(2)
+        +
+
+        (
+            east >= 0
+                ? " ft E"
+                : " ft W"
+        );
+
+
+
+    document.getElementById(
+        "ddVS"
+    ).innerText =
+
+        Math.abs(
+            verticalSection
+        ).toFixed(2)
+
+        +
+
+        (
+            verticalSection >= 0
+                ? " ft"
+                : " ft opposite"
+        );
+
+
+
+    document.getElementById(
+        "ddClosureDistance"
+    ).innerText =
+
+        closureDistance.toFixed(2)
+        + " ft";
+
+
+
+    document.getElementById(
+        "ddClosureAzimuth"
+    ).innerText =
+
+        closureAzimuth.toFixed(2)
+        + "°";
+
+
+
+    document.getElementById(
+        "ddFinalDLS"
+    ).innerText =
+
+        finalDLS.toFixed(4)
+        + " °/100 ft";
+
+}
+
+
+
+// =============================================
+// VERTICAL SECTION
+// =============================================
+
+function calculateVS(
+    north,
+    east,
+    referenceAzimuth
+) {
+
+
+    const azimuthRad =
+
+        referenceAzimuth *
+        Math.PI /
+        180;
+
+
+    return (
+
+        north *
+        Math.cos(
+            azimuthRad
+        )
+
+        +
+
+        east *
+        Math.sin(
+            azimuthRad
+        )
+
+    );
+
+}
+
+</script>
