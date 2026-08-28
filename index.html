@@ -1,2825 +1,787 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Drilling Engineering Calculator</title>
-
-<style>
-* {
-    box-sizing: border-box;
-}
-
-body {
-    margin: 0;
-    padding: 24px;
-    font-family: Arial, sans-serif;
-    background: #f2f4f7;
-    color: #111827;
-}
-
-.page {
-    width: 100%;
-    max-width: 1100px;
-    margin: auto;
-}
-
-/* =========================
-   HEADER
-========================= */
-
-.header {
-    background: #111827;
-    color: white;
-    padding: 28px;
-    border-radius: 16px;
-    text-align: center;
-    margin-bottom: 20px;
-}
-
-.header h1 {
-    margin: 0 0 8px;
-    font-size: 1.8rem;
-}
-
-.header p {
-    margin: 0;
-    opacity: 0.8;
-}
-
-/* =========================
-   CARD
-========================= */
-
-.card {
-    background: white;
-    padding: 24px;
-    border-radius: 16px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-    margin-bottom: 20px;
-}
-
-.card h2 {
-    margin: 0 0 18px;
-    text-align: center;
-    font-size: 1.3rem;
-}
-
-.card h3 {
-    margin: 24px 0 12px;
-    font-size: 1rem;
-}
-
-/* =========================
-   FORM
-========================= */
-
-label {
-    display: block;
-    margin: 14px 0 6px;
-    font-weight: 600;
-    font-size: 0.9rem;
-}
-
-input,
-select {
-    width: 100%;
-    padding: 11px 13px;
-    border: 1px solid #d1d5db;
-    border-radius: 8px;
-    font-size: 0.95rem;
-    background: white;
-}
-
-input:focus,
-select:focus {
-    outline: none;
-    border-color: #111827;
-}
-
-/* =========================
-   BUTTON
-========================= */
-
-button {
-    width: 100%;
-    margin-top: 18px;
-    padding: 12px;
-    border: none;
-    border-radius: 8px;
-    background: #18181b;
-    color: white;
-    font-weight: 700;
-    cursor: pointer;
-}
-
-button:hover {
-    background: #27272a;
-}
-
-button.secondary {
-    background: #e5e7eb;
-    color: #111827;
-}
-
-button.secondary:hover {
-    background: #d1d5db;
-}
-
-button.small {
-    width: auto;
-    margin: 0;
-    padding: 7px 11px;
-}
-
-/* =========================
-   RESULT
-========================= */
-
-.result-box {
-    margin-top: 20px;
-    padding: 16px;
-    background: #f0fdf4;
-    border: 1px solid #bbf7d0;
-    border-radius: 12px;
-
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-}
-
-.result-box p {
-    margin: 0;
-
-    display: flex;
-    justify-content: space-between;
-    gap: 15px;
-
-    color: #166534;
-    font-size: 0.9rem;
-}
-
-.result-box strong {
-    color: #15803d;
-}
-
-.formula {
-    margin-top: 15px;
-    text-align: center;
-    color: #6b7280;
-    font-size: 0.82rem;
-    line-height: 1.6;
-}
-
-.error {
-    color: #b00020;
-    font-weight: 700;
-}
-
-/* =========================
-   TABLE
-========================= */
-
-.table-wrap {
-    overflow-x: auto;
-    margin-top: 12px;
-}
-
-table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-th,
-td {
-    padding: 9px;
-    border-bottom: 1px solid #e5e7eb;
-    text-align: center;
-    white-space: nowrap;
-}
-
-th {
-    background: #f9fafb;
-    font-size: 0.82rem;
-}
-
-td input {
-    min-width: 105px;
-    padding: 8px;
-}
-
-.dd-note {
-    color: #6b7280;
-    font-size: 0.82rem;
-    text-align: center;
-    margin: -8px 0 18px;
-}
-
-/* =========================
-   MOBILE
-========================= */
-
-@media (max-width: 650px) {
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Drilling Engineering Calculator</title>
+  <style>
+    :root {
+      --primary-color: #0f172a;
+      --accent-color: #2563eb;
+      --bg-color: #f8fafc;
+      --card-bg: #ffffff;
+      --border-color: #e2e8f0;
+      --text-color: #334155;
+      --result-bg: #f0fdf4;
+      --result-border: #bbf7d0;
+      --result-text: #166534;
+    }
 
     body {
-        padding: 12px;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      margin: 0;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    h1 {
+      text-align: center;
+      color: var(--primary-color);
+      margin-bottom: 25px;
     }
 
     .card {
-        padding: 17px;
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
     }
 
-    .header {
-        padding: 22px 16px;
+    h2 {
+      margin-top: 0;
+      color: var(--primary-color);
+      border-bottom: 2px solid var(--border-color);
+      padding-bottom: 8px;
+      font-size: 1.25rem;
     }
 
-    .header h1 {
-        font-size: 1.45rem;
+    h3 {
+      font-size: 1rem;
+      margin-top: 15px;
+      margin-bottom: 10px;
+      color: #475569;
     }
-}
-</style>
+
+    label {
+      display: block;
+      margin-top: 10px;
+      font-size: 0.875rem;
+      font-weight: 600;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 8px 12px;
+      margin-top: 4px;
+      border: 1px solid var(--border-color);
+      border-radius: 4px;
+      box-sizing: border-box;
+      font-size: 0.9rem;
+    }
+
+    button {
+      width: 100%;
+      background-color: var(--primary-color);
+      color: white;
+      border: none;
+      padding: 10px;
+      margin-top: 15px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background-color 0.2s;
+    }
+
+    button:hover {
+      background-color: #1e293b;
+    }
+
+    .btn-add {
+      background-color: #e2e8f0;
+      color: #334155;
+      margin-top: 10px;
+    }
+
+    .btn-add:hover {
+      background-color: #cbd5e1;
+    }
+
+    .btn-remove {
+      background-color: #ef4444;
+      color: white;
+      padding: 4px 8px;
+      margin-top: 0;
+      width: auto;
+      font-size: 0.8rem;
+    }
+
+    .result-box {
+      background-color: var(--result-bg);
+      border: 1px solid var(--result-border);
+      border-radius: 6px;
+      padding: 12px 15px;
+      margin-top: 15px;
+    }
+
+    .result-box p {
+      margin: 6px 0;
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.9rem;
+    }
+
+    .result-box strong {
+      color: var(--result-text);
+    }
+
+    .formula {
+      font-size: 0.75rem;
+      color: #64748b;
+      margin-top: 10px;
+      line-height: 1.4;
+      background: #f8fafc;
+      padding: 8px;
+      border-radius: 4px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+      font-size: 0.85rem;
+      overflow-x: auto;
+      display: block;
+    }
+
+    th, td {
+      border: 1px solid var(--border-color);
+      padding: 6px 8px;
+      text-align: center;
+    }
+
+    th {
+      background-color: #f1f5f9;
+    }
+
+    .table-container {
+      overflow-x: auto;
+    }
+  </style>
 </head>
-
 <body>
 
-<div class="page">
+<div class="container">
+  <h1>Drilling Engineering Calculator</h1>
 
-<!-- =====================================================
-     HEADER
-===================================================== -->
-
-<header class="header">
-
-    <h1>Drilling Engineering Calculator</h1>
-
-    <p>
-        Drilling, Pressure, ROP, Unit Conversion &
-        Directional Survey Tools
-    </p>
-
-</header>
-
-
-<!-- =====================================================
-     HYDROSTATIC PRESSURE
-===================================================== -->
-
-<section class="card">
-
+  <!-- HYDROSTATIC PRESSURE -->
+  <section class="card">
     <h2>Hydrostatic Pressure</h2>
-
-    <label for="mudWeightHydro">
-        Mud Weight (ppg)
-    </label>
-
-    <input
-        type="number"
-        id="mudWeightHydro"
-        step="0.01"
-        placeholder="Contoh: 10"
-    >
-
-    <label for="tvdHydro">
-        TVD (ft)
-    </label>
-
-    <input
-        type="number"
-        id="tvdHydro"
-        step="0.1"
-        placeholder="Contoh: 5000"
-    >
-
-    <button onclick="calculateHydrostatic()">
-        CALCULATE
-    </button>
-
+    <label for="hpMW">Mud Weight (ppg)</label>
+    <input type="number" id="hpMW" step="any" placeholder="Contoh: 10">
+    <label for="hpTVD">TVD (ft)</label>
+    <input type="number" id="hpTVD" step="any" placeholder="Contoh: 5000">
+    <button onclick="calculateHydrostatic()">CALCULATE</button>
     <div class="result-box">
-
-        <p>
-            Hydrostatic Pressure
-
-            <strong id="hydroResult">
-                0.00 psi
-            </strong>
-        </p>
-
+      <p>Hydrostatic Pressure <strong id="hpResult">0.00 psi</strong></p>
     </div>
+    <div class="formula">P = 0.052 × MW × TVD</div>
+  </section>
 
-    <div class="formula">
-        P = 0.052 × MW × TVD
-    </div>
-
-</section>
-
-
-<!-- =====================================================
-     FIT / EMW
-===================================================== -->
-
-<section class="card">
-
+  <!-- FIT / EMW CALCULATOR -->
+  <section class="card">
     <h2>FIT / EMW Calculator</h2>
-
-    <label for="mudWeightFIT">
-        Mud Weight (ppg)
-    </label>
-
-    <input
-        type="number"
-        id="mudWeightFIT"
-        step="0.01"
-        placeholder="Contoh: 10"
-    >
-
-    <label for="shoeTVD">
-        Shoe TVD (ft)
-    </label>
-
-    <input
-        type="number"
-        id="shoeTVD"
-        step="0.1"
-        placeholder="Contoh: 5000"
-    >
-
-    <label for="surfacePressure">
-        FIT Surface Pressure (psi)
-    </label>
-
-    <input
-        type="number"
-        id="surfacePressure"
-        step="0.1"
-        placeholder="Contoh: 500"
-    >
-
-    <button onclick="calculateFIT()">
-        CALCULATE FIT EMW
-    </button>
-
+    <label for="fitMW">Mud Weight (ppg)</label>
+    <input type="number" id="fitMW" step="any" placeholder="Contoh: 10">
+    <label for="fitTVD">Shoe TVD (ft)</label>
+    <input type="number" id="fitTVD" step="any" placeholder="Contoh: 5000">
+    <label for="fitSurfacePressure">FIT Surface Pressure (psi)</label>
+    <input type="number" id="fitSurfacePressure" step="any" placeholder="Contoh: 500">
+    <button onclick="calculateFIT()">CALCULATE FIT EMW</button>
     <div class="result-box">
-
-        <p>
-            FIT EMW
-            <strong id="fitResult">
-                0.00 ppg
-            </strong>
-        </p>
-
-        <p>
-            Pressure at Shoe
-            <strong id="shoePressure">
-                0.00 psi
-            </strong>
-        </p>
-
+      <p>FIT EMW <strong id="fitEMWResult">0.00 ppg</strong></p>
+      <p>Pressure at Shoe <strong id="fitShoePressureResult">0.00 psi</strong></p>
     </div>
+    <div class="formula">EMW = (Hydrostatic Pressure + Surface Pressure) / (0.052 × Shoe TVD)</div>
+  </section>
 
-    <div class="formula">
-        EMW =
-        (Hydrostatic Pressure + Surface Pressure)
-        /
-        (0.052 × Shoe TVD)
-    </div>
-
-</section>
-
-
-<!-- =====================================================
-     PORE PRESSURE
-===================================================== -->
-
-<section class="card">
-
+  <!-- PORE PRESSURE - EATON D-EXPONENT -->
+  <section class="card">
     <h2>Pore Pressure - Eaton D-Exponent</h2>
-
-    <label for="obGradient">
-        Overburden Gradient (psi/ft)
-    </label>
-
-    <input
-        type="number"
-        id="obGradient"
-        step="0.001"
-        placeholder="Contoh: 1.0"
-    >
-
-    <label for="normalGradient">
-        Normal Pore Pressure Gradient (psi/ft)
-    </label>
-
-    <input
-        type="number"
-        id="normalGradient"
-        step="0.001"
-        placeholder="Contoh: 0.465"
-    >
-
-    <label for="observedD">
-        Observed D-Exponent
-    </label>
-
-    <input
-        type="number"
-        id="observedD"
-        step="0.001"
-        placeholder="Contoh: 1.2"
-    >
-
-    <label for="normalD">
-        Normal D-Exponent
-    </label>
-
-    <input
-        type="number"
-        id="normalD"
-        step="0.001"
-        placeholder="Contoh: 1.0"
-    >
-
-    <label for="ppTVD">
-        TVD (ft)
-    </label>
-
-    <input
-        type="number"
-        id="ppTVD"
-        step="0.1"
-        placeholder="Contoh: 5000"
-    >
-
-    <label for="eatonExponent">
-        Eaton Exponent
-    </label>
-
-    <input
-        type="number"
-        id="eatonExponent"
-        value="1.2"
-        step="0.1"
-    >
-
-    <button onclick="calculatePorePressure()">
-        CALCULATE PORE PRESSURE
-    </button>
-
+    <label for="eatonOBG">Overburden Gradient (psi/ft)</label>
+    <input type="number" id="eatonOBG" step="any" placeholder="Contoh: 1.0">
+    <label for="eatonNormalPG">Normal Pore Pressure Gradient (psi/ft)</label>
+    <input type="number" id="eatonNormalPG" step="any" placeholder="Contoh: 0.465">
+    <label for="eatonDobs">Observed D-Exponent</label>
+    <input type="number" id="eatonDobs" step="any" placeholder="Contoh: 1.2">
+    <label for="eatonDnorm">Normal D-Exponent</label>
+    <input type="number" id="eatonDnorm" step="any" placeholder="Contoh: 1.0">
+    <label for="eatonTVD">TVD (ft)</label>
+    <input type="number" id="eatonTVD" step="any" placeholder="Contoh: 5000">
+    <label for="eatonN">Eaton Exponent (n)</label>
+    <input type="number" id="eatonN" step="any" value="1.2">
+    <button onclick="calculateEaton()">CALCULATE PORE PRESSURE</button>
     <div class="result-box">
-
-        <p>
-            Pore Pressure Gradient
-
-            <strong id="ppGradient">
-                0.0000 psi/ft
-            </strong>
-        </p>
-
-        <p>
-            Pore Pressure
-
-            <strong id="ppPpg">
-                0.00 ppg
-            </strong>
-        </p>
-
-        <p>
-            Pore Pressure
-
-            <strong id="ppPsi">
-                0 psi
-            </strong>
-        </p>
-
+      <p>Pore Pressure Gradient <strong id="eatonPGResult">0.0000 psi/ft</strong></p>
+      <p>Pore Pressure (ppg) <strong id="eatonPPGResult">0.00 ppg</strong></p>
+      <p>Pore Pressure (psi) <strong id="eatonPSIResult">0 psi</strong></p>
     </div>
+    <div class="formula">PP Gradient = S - (S - Pn) × (Dobs / Dnorm)^n</div>
+  </section>
 
-    <div class="formula">
-        PP Gradient =
-        S - (S - Pn) × (Dobs / Dnormal)<sup>n</sup>
-    </div>
-
-</section>
-
-
-<!-- =====================================================
-     APL & ECD
-===================================================== -->
-
-<section class="card">
-
+  <!-- ANNULAR PRESSURE LOSS & ECD -->
+  <section class="card">
     <h2>Annular Pressure Loss & ECD</h2>
-
-    <label for="mw">
-        Mud Weight - MW (ppg)
-    </label>
-
-    <input
-        type="number"
-        id="mw"
-        step="any"
-        placeholder="Contoh: 10"
-    >
-
-    <label for="pv">
-        Plastic Viscosity - PV (cP)
-    </label>
-
-    <input
-        type="number"
-        id="pv"
-        step="any"
-        placeholder="Contoh: 15"
-    >
-
-    <label for="yp">
-        Yield Point - YP (lb/100 ft²)
-    </label>
-
-    <input
-        type="number"
-        id="yp"
-        step="any"
-        placeholder="Contoh: 20"
-    >
-
-    <label for="flowRate">
-        Flow Rate - Q (gpm)
-    </label>
-
-    <input
-        type="number"
-        id="flowRate"
-        step="any"
-        placeholder="Contoh: 500"
-    >
-
-    <label for="holeId">
-        Hole / Casing ID - Dh (inch)
-    </label>
-
-    <input
-        type="number"
-        id="holeId"
-        step="any"
-        placeholder="Contoh: 8.5"
-    >
-
-    <label for="pipeOd">
-        Pipe / OD - Do (inch)
-    </label>
-
-    <input
-        type="number"
-        id="pipeOd"
-        step="any"
-        placeholder="Contoh: 5"
-    >
-
-    <label for="length">
-        Length / TVD - L (ft)
-    </label>
-
-    <input
-        type="number"
-        id="length"
-        step="any"
-        placeholder="Contoh: 5000"
-    >
-
-    <button onclick="calculateAPLAndECD()">
-        CALCULATE APL & ECD
-    </button>
-
+    <label for="aplMW">Mud Weight - MW (ppg)</label>
+    <input type="number" id="aplMW" step="any" placeholder="Contoh: 10">
+    <label for="aplPV">Plastic Viscosity - PV (cP)</label>
+    <input type="number" id="aplPV" step="any" placeholder="Contoh: 15">
+    <label for="aplYP">Yield Point - YP (lb/100 ft²)</label>
+    <input type="number" id="aplYP" step="any" placeholder="Contoh: 20">
+    <label for="aplQ">Flow Rate - Q (gpm)</label>
+    <input type="number" id="aplQ" step="any" placeholder="Contoh: 500">
+    <label for="aplDh">Hole / Casing ID - Dh (inch)</label>
+    <input type="number" id="aplDh" step="any" placeholder="Contoh: 8.5">
+    <label for="aplDo">Pipe / OD - Do (inch)</label>
+    <input type="number" id="aplDo" step="any" placeholder="Contoh: 5">
+    <label for="aplL">Length / TVD - L (ft)</label>
+    <input type="number" id="aplL" step="any" placeholder="Contoh: 5000">
+    <button onclick="calculateAPL()">CALCULATE APL & ECD</button>
     <div class="result-box">
-
-        <p>
-            Annular Velocity
-
-            <strong id="avResult">
-                0.00 ft/min
-            </strong>
-        </p>
-
-        <p>
-            Annular Pressure Loss
-
-            <strong id="aplResult">
-                0.00 psi
-            </strong>
-        </p>
-
-        <p>
-            Equivalent Circulating Density
-
-            <strong id="ecdResult">
-                0.00 ppg
-            </strong>
-        </p>
-
+      <p>Annular Velocity <strong id="aplAVResult">0.00 ft/min</strong></p>
+      <p>Annular Pressure Loss <strong id="aplResult">0.00 psi</strong></p>
+      <p>Equivalent Circulating Density <strong id="ecdResult">0.00 ppg</strong></p>
     </div>
+  </section>
 
-</section>
-
-
-<!-- =====================================================
-     ROP
-===================================================== -->
-
-<section class="card">
-
+  <!-- RATE OF PENETRATION (ROP) -->
+  <section class="card">
     <h2>Rate of Penetration (ROP)</h2>
-
-    <label for="ropStartDepth">
-        Start Depth
-    </label>
-
-    <input
-        type="number"
-        id="ropStartDepth"
-        step="any"
-        placeholder="Contoh: 5000"
-    >
-
-    <label for="ropEndDepth">
-        End Depth
-    </label>
-
-    <input
-        type="number"
-        id="ropEndDepth"
-        step="any"
-        placeholder="Contoh: 5100"
-    >
-
-    <label for="ropDepthUnit">
-        Depth Unit
-    </label>
-
-    <select id="ropDepthUnit">
-
-        <option value="ft">
-            ft
-        </option>
-
-        <option value="m">
-            m
-        </option>
-
+    <label for="ropStart">Start Depth</label>
+    <input type="number" id="ropStart" step="any" placeholder="Contoh: 5000">
+    <label for="ropEnd">End Depth</label>
+    <input type="number" id="ropEnd" step="any" placeholder="Contoh: 5100">
+    <label for="ropUnit">Depth Unit</label>
+    <select id="ropUnit">
+      <option value="ft">ft</option>
+      <option value="m">m</option>
     </select>
-
-    <label for="ropTime">
-        Drilling Time
-    </label>
-
-    <input
-        type="number"
-        id="ropTime"
-        step="any"
-        placeholder="Contoh: 2"
-    >
-
-    <label for="ropTimeUnit">
-        Time Unit
-    </label>
-
+    <label for="ropTime">Drilling Time</label>
+    <input type="number" id="ropTime" step="any" placeholder="Contoh: 2">
+    <label for="ropTimeUnit">Time Unit</label>
     <select id="ropTimeUnit">
-
-        <option value="hr">
-            hour (hr)
-        </option>
-
-        <option value="min">
-            minute (min)
-        </option>
-
+      <option value="hr">hour (hr)</option>
+      <option value="min">minute (min)</option>
     </select>
-
-    <button onclick="calculateROP()">
-        CALCULATE ROP
-    </button>
-
+    <button onclick="calculateROP()">CALCULATE ROP</button>
     <div class="result-box">
-
-        <p>
-            Drilled Interval
-            <strong id="ropInterval">
-                0 ft
-            </strong>
-        </p>
-
-        <p>
-            ROP
-            <strong id="ropFtHr">
-                0.00 ft/hr
-            </strong>
-        </p>
-
-        <p>
-            ROP
-            <strong id="ropFtMin">
-                0.00 ft/min
-            </strong>
-        </p>
-
-        <p>
-            ROP
-            <strong id="ropMHr">
-                0.00 m/hr
-            </strong>
-        </p>
-
-        <p>
-            ROP
-            <strong id="ropMMin">
-                0.00 m/min
-            </strong>
-        </p>
-
+      <p>Drilled Interval <strong id="ropInterval">0 ft</strong></p>
+      <p>ROP (ft/hr) <strong id="ropFtHr">0.00 ft/hr</strong></p>
+      <p>ROP (ft/min) <strong id="ropFtMin">0.00 ft/min</strong></p>
+      <p>ROP (m/hr) <strong id="ropMHr">0.00 m/hr</strong></p>
+      <p>ROP (m/min) <strong id="ropMMin">0.00 m/min</strong></p>
     </div>
+    <div class="formula">ROP = Drilled Interval / Drilling Time</div>
+  </section>
 
-    <div class="formula">
-        ROP = Drilled Interval / Drilling Time
-    </div>
-
-</section>
-
-
-<!-- =====================================================
-     TEMPERATURE CONVERTER
-===================================================== -->
-
-<section class="card">
-
+  <!-- TEMPERATURE CONVERTER -->
+  <section class="card">
     <h2>Temperature Converter</h2>
-
-    <label for="temperatureValue">
-        Temperature
-    </label>
-
-    <input
-        type="number"
-        id="temperatureValue"
-        step="any"
-        placeholder="Contoh: 100"
-    >
-
-    <label for="temperatureUnit">
-        Unit
-    </label>
-
-    <select id="temperatureUnit">
-
-        <option value="C">
-            Celsius (°C)
-        </option>
-
-        <option value="F">
-            Fahrenheit (°F)
-        </option>
-
-        <option value="K">
-            Kelvin (K)
-        </option>
-
+    <label for="tempVal">Temperature</label>
+    <input type="number" id="tempVal" step="any" placeholder="Contoh: 100">
+    <label for="tempUnit">Unit</label>
+    <select id="tempUnit">
+      <option value="C">Celsius (°C)</option>
+      <option value="F">Fahrenheit (°F)</option>
+      <option value="K">Kelvin (K)</option>
     </select>
-
-    <button onclick="calculateTemperature()">
-        CONVERT TEMPERATURE
-    </button>
-
+    <button onclick="calculateTemperature()">CONVERT TEMPERATURE</button>
     <div class="result-box">
-
-        <p>
-            Celsius
-            <strong id="tempC">
-                0.00 °C
-            </strong>
-        </p>
-
-        <p>
-            Fahrenheit
-            <strong id="tempF">
-                0.00 °F
-            </strong>
-        </p>
-
-        <p>
-            Kelvin
-            <strong id="tempK">
-                0.00 K
-            </strong>
-        </p>
-
+      <p>Celsius <strong id="tempC">0.00 °C</strong></p>
+      <p>Fahrenheit <strong id="tempF">0.00 °F</strong></p>
+      <p>Kelvin <strong id="tempK">0.00 K</strong></p>
     </div>
+    <div class="formula">°F = (°C × 9/5) + 32 | K = °C + 273.15</div>
+  </section>
 
-    <div class="formula">
-        °F = (°C × 9/5) + 32
-        &nbsp; | &nbsp;
-        K = °C + 273.15
-    </div>
-
-</section>
-
-
-<!-- =====================================================
-     PRESSURE CONVERTER
-===================================================== -->
-
-<section class="card">
-
+  <!-- PRESSURE CONVERTER -->
+  <section class="card">
     <h2>Pressure Unit Converter</h2>
-
-    <label for="pressureValue">
-        Pressure
-    </label>
-
-    <input
-        type="number"
-        id="pressureValue"
-        step="any"
-        placeholder="Contoh: 1000"
-    >
-
-    <label for="pressureUnit">
-        Unit
-    </label>
-
-    <select id="pressureUnit">
-
-        <option value="psi">
-            psi
-        </option>
-
-        <option value="bar">
-            bar
-        </option>
-
-        <option value="kPa">
-            kPa
-        </option>
-
-        <option value="MPa">
-            MPa
-        </option>
-
-        <option value="atm">
-            atm
-        </option>
-
-        <option value="kgcm2">
-            kg/cm²
-        </option>
-
+    <label for="pressVal">Pressure</label>
+    <input type="number" id="pressVal" step="any" placeholder="Contoh: 1000">
+    <label for="pressUnit">Unit</label>
+    <select id="pressUnit">
+      <option value="psi">psi</option>
+      <option value="bar">bar</option>
+      <option value="kPa">kPa</option>
+      <option value="MPa">MPa</option>
+      <option value="atm">atm</option>
+      <option value="kgcm2">kg/cm²</option>
     </select>
-
-    <button onclick="calculatePressureConverter()">
-        CONVERT PRESSURE
-    </button>
-
+    <button onclick="calculatePressureConverter()">CONVERT PRESSURE</button>
     <div class="result-box">
-
-        <p>
-            PSI
-            <strong id="pressurePsi">
-                0.00 psi
-            </strong>
-        </p>
-
-        <p>
-            Bar
-            <strong id="pressureBar">
-                0.00 bar
-            </strong>
-        </p>
-
-        <p>
-            kPa
-            <strong id="pressureKpa">
-                0.00 kPa
-            </strong>
-        </p>
-
-        <p>
-            MPa
-            <strong id="pressureMpa">
-                0.0000 MPa
-            </strong>
-        </p>
-
-        <p>
-            Atmosphere
-            <strong id="pressureAtm">
-                0.0000 atm
-            </strong>
-        </p>
-
-        <p>
-            kg/cm²
-            <strong id="pressureKgcm2">
-                0.0000 kg/cm²
-            </strong>
-        </p>
-
+      <p>PSI <strong id="pPSI">0.00 psi</strong></p>
+      <p>Bar <strong id="pBar">0.00 bar</strong></p>
+      <p>kPa <strong id="pKPa">0.00 kPa</strong></p>
+      <p>MPa <strong id="pMPa">0.0000 MPa</strong></p>
+      <p>Atmosphere <strong id="pAtm">0.0000 atm</strong></p>
+      <p>kg/cm² <strong id="pKgCm2">0.0000 kg/cm²</strong></p>
     </div>
+  </section>
 
-</section>
-
-
-<!-- =====================================================
-     DIRECTIONAL DRILLING
-===================================================== -->
-
-<section class="card">
-
+  <!-- DIRECTIONAL DRILLING CALCULATOR -->
+  <section class="card">
     <h2>Directional Drilling Calculator</h2>
+    <p style="font-size: 0.85rem; color: #64748b;">Minimum Curvature Method. TVD dan posisi dihitung relatif terhadap Initial Survey.</p>
+    
+    <h3>Initial Survey / Reference Position</h3>
+    <label for="dirInitMD">Initial MD (ft)</label>
+    <input type="number" id="dirInitMD" value="0">
+    <label for="dirInitTVD">Initial TVD (ft)</label>
+    <input type="number" id="dirInitTVD" value="0">
+    <label for="dirInitNorth">Initial Northing (ft)</label>
+    <input type="number" id="dirInitNorth" value="0">
+    <label for="dirInitEast">Initial Easting (ft)</label>
+    <input type="number" id="dirInitEast" value="0">
+    <label for="dirTargetAzi">Reference / Target Azimuth (°)</label>
+    <input type="number" id="dirTargetAzi" value="0">
 
-    <p class="dd-note">
-
-        Minimum Curvature Method.
-        TVD dan position dihitung relatif terhadap Initial Survey.
-
-    </p>
-
-
-    <!-- INITIAL SURVEY -->
-
-    <h3>
-        Initial Survey / Reference Position
-    </h3>
-
-    <label for="ddInitialMD">
-        Initial MD (ft)
-    </label>
-
-    <input
-        type="number"
-        id="ddInitialMD"
-        step="any"
-        value="0"
-    >
-
-    <label for="ddInitialTVD">
-        Initial TVD (ft)
-    </label>
-
-    <input
-        type="number"
-        id="ddInitialTVD"
-        step="any"
-        value="0"
-    >
-
-    <label for="ddInitialNorth">
-        Initial Northing (ft)
-    </label>
-
-    <input
-        type="number"
-        id="ddInitialNorth"
-        step="any"
-        value="0"
-    >
-
-    <label for="ddInitialEast">
-        Initial Easting (ft)
-    </label>
-
-    <input
-        type="number"
-        id="ddInitialEast"
-        step="any"
-        value="0"
-    >
-
-    <label for="referenceAzimuth">
-        Reference / Target Azimuth (°)
-    </label>
-
-    <input
-        type="number"
-        id="referenceAzimuth"
-        step="any"
-        value="0"
-        placeholder="Contoh: 90"
-    >
-
-
-    <!-- SURVEY TABLE -->
-
-    <h3>
-        Survey Stations
-    </h3>
-
-    <div class="table-wrap">
-
-        <table>
-
-            <thead>
-
-                <tr>
-                    <th>MD (ft)</th>
-                    <th>Inc (°)</th>
-                    <th>Azi (°)</th>
-                    <th>Action</th>
-                </tr>
-
-            </thead>
-
-            <tbody id="ddSurveyBody">
-
-                <tr>
-
-                    <td>
-                        <input
-                            type="number"
-                            class="dd-md"
-                            step="any"
-                            value="0"
-                        >
-                    </td>
-
-                    <td>
-                        <input
-                            type="number"
-                            class="dd-inc"
-                            step="any"
-                            value="0"
-                        >
-                    </td>
-
-                    <td>
-                        <input
-                            type="number"
-                            class="dd-azi"
-                            step="any"
-                            value="0"
-                        >
-                    </td>
-
-                    <td>
-
-                        <button
-                            class="small"
-                            onclick="removeDDRow(this)"
-                        >
-                            X
-                        </button>
-
-                    </td>
-
-                </tr>
-
-            </tbody>
-
-        </table>
-
+    <h3>Survey Stations</h3>
+    <div class="table-container">
+      <table id="surveyTable">
+        <thead>
+          <tr>
+            <th>MD (ft)</th>
+            <th>Inc (°)</th>
+            <th>Azi (°)</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><input type="number" class="s-md" value="0"></td>
+            <td><input type="number" class="s-inc" value="0"></td>
+            <td><input type="number" class="s-azi" value="0"></td>
+            <td><button class="btn-remove" onclick="removeSurveyRow(this)">X</button></td>
+          </tr>
+        </tbody>
+      </table>
     </div>
-
-
-    <button
-        class="secondary"
-        onclick="addDDRow()"
-    >
-        + ADD SURVEY
-    </button>
-
-
-    <button
-        onclick="calculateDirectionalDrilling()"
-    >
-        CALCULATE DIRECTIONAL SURVEY
-    </button>
-
-
-    <!-- DD SUMMARY -->
+    <button class="btn-add" onclick="addSurveyRow()">+ ADD SURVEY</button>
+    <button onclick="calculateDirectionalSurvey()">CALCULATE DIRECTIONAL SURVEY</button>
 
     <div class="result-box">
-
-        <p>
-            Total MD
-            <strong id="ddTotalMD">
-                0.00 ft
-            </strong>
-        </p>
-
-        <p>
-            Relative TVD
-            <strong id="ddRelativeTVD">
-                0.00 ft
-            </strong>
-        </p>
-
-        <p>
-            Actual TVD
-            <strong id="ddTVD">
-                0.00 ft
-            </strong>
-        </p>
-
-        <p>
-            Northing
-            <strong id="ddNorth">
-                0.00 ft N
-            </strong>
-        </p>
-
-        <p>
-            Easting
-            <strong id="ddEast">
-                0.00 ft E
-            </strong>
-        </p>
-
-        <p>
-            Vertical Section
-            <strong id="ddVS">
-                0.00 ft
-            </strong>
-        </p>
-
-        <p>
-            Closure Distance
-            <strong id="ddClosureDistance">
-                0.00 ft
-            </strong>
-        </p>
-
-        <p>
-            Closure Azimuth
-            <strong id="ddClosureAzimuth">
-                0.00°
-            </strong>
-        </p>
-
-        <p>
-            Final DLS
-            <strong id="ddFinalDLS">
-                0.00 °/100 ft
-            </strong>
-        </p>
-
+      <p>Total MD <strong id="dirTotalMD">0.00 ft</strong></p>
+      <p>Relative TVD <strong id="dirRelTVD">0.00 ft</strong></p>
+      <p>Actual TVD <strong id="dirActTVD">0.00 ft</strong></p>
+      <p>Northing <strong id="dirNorth">0.00 ft N</strong></p>
+      <p>Easting <strong id="dirEast">0.00 ft E</strong></p>
+      <p>Vertical Section <strong id="dirVS">0.00 ft</strong></p>
+      <p>Closure Distance <strong id="dirClosureDist">0.00 ft</strong></p>
+      <p>Closure Azimuth <strong id="dirClosureAzi">0.00°</strong></p>
+      <p>Final DLS <strong id="dirFinalDLS">0.00 °/100 ft</strong></p>
     </div>
 
-
-    <!-- DD RESULT TABLE -->
-
-    <h3>
-        Directional Survey Results
-    </h3>
-
-    <div class="table-wrap">
-
-        <table>
-
-            <thead>
-
-                <tr>
-
-                    <th>MD</th>
-                    <th>Inc</th>
-                    <th>Azi</th>
-                    <th>ΔMD</th>
-                    <th>Rel. TVD</th>
-                    <th>Actual TVD</th>
-                    <th>N/S</th>
-                    <th>E/W</th>
-                    <th>VS</th>
-                    <th>Dogleg</th>
-                    <th>RF</th>
-                    <th>DLS</th>
-
-                </tr>
-
-            </thead>
-
-            <tbody id="ddResultBody"></tbody>
-
-        </table>
-
+    <h3>Directional Survey Results</h3>
+    <div class="table-container">
+      <table id="dirResultTable">
+        <thead>
+          <tr>
+            <th>MD</th><th>Inc</th><th>Azi</th><th>ΔMD</th><th>Rel. TVD</th><th>Actual TVD</th><th>N/S</th><th>E/W</th><th>VS</th><th>Dogleg</th><th>RF</th><th>DLS</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Dynamic Results -->
+        </tbody>
+      </table>
     </div>
+  </section>
 
+  <!-- PUMP OUTPUT & EFFICIENCY -->
+  <section class="card">
+    <h2>Pump Output & Pump Efficiency</h2>
+    <label for="pumpType">Pump Type</label>
+    <select id="pumpType">
+      <option value="triplex">Triplex</option>
+      <option value="duplex">Duplex</option>
+    </select>
+    <label for="linerDiameter">Liner Diameter (inch)</label>
+    <input type="number" id="linerDiameter" step="any" placeholder="Contoh: 6">
+    <label for="strokeLength">Stroke Length (inch)</label>
+    <input type="number" id="strokeLength" step="any" placeholder="Contoh: 12">
+    <label for="pumpSPM">Pump Speed (SPM)</label>
+    <input type="number" id="pumpSPM" step="any" placeholder="Contoh: 60">
+    <label for="pumpEfficiency">Pump Efficiency (%)</label>
+    <input type="number" id="pumpEfficiency" step="any" placeholder="Contoh: 90">
+    <button onclick="calculatePump()">CALCULATE PUMP OUTPUT</button>
 
+    <div class="result-box">
+      <p>Theoretical Pump Output <strong id="pumpTheoreticalGPM">0.00 gpm</strong></p>
+      <p>Theoretical Pump Output <strong id="pumpTheoreticalBblMin">0.00 bbl/min</strong></p>
+      <p>Theoretical Displacement <strong id="pumpTheoreticalBblStk">0.0000 bbl/stk</strong></p>
+      <p>Actual Pump Output <strong id="pumpActualGPM">0.00 gpm</strong></p>
+      <p>Actual Pump Output <strong id="pumpActualBblMin">0.00 bbl/min</strong></p>
+      <p>Actual Pump Output <strong id="pumpActualBblHr">0.00 bbl/hr</strong></p>
+      <p>Pump Efficiency <strong id="pumpEfficiencyResult">0.00 %</strong></p>
+    </div>
     <div class="formula">
-
-        Dogleg β =
-        acos[
-        cos(I₁)cos(I₂)
-        +
-        sin(I₁)sin(I₂)cos(ΔAz)
-        ]
-
-        <br>
-
-        RF =
-        (2 / β) × tan(β / 2)
-
-        <br>
-
-        DLS =
-        Dogleg Angle / ΔMD × 100
-
-        <br>
-
-        Closure Distance =
-        √(North² + East²)
-
-        <br>
-
-        Closure Azimuth =
-        atan2(East, North)
-
+      Triplex: Theoretical Output = π/4 × D² × L × SPM × 3 <br>
+      Duplex: Theoretical Output = π/4 × D² × L × SPM × 2 <br>
+      Actual Output = Theoretical Output × Efficiency <br>
+      1 gallon = 231 in³ | 1 bbl = 42 gallons
     </div>
-
-</section>
+  </section>
 
 </div>
 
+<script>
+  // Utility Helper
+  const parseNum = (id) => parseFloat(document.getElementById(id).value) || 0;
 
-<!-- =====================================================
-     JAVASCRIPT
-===================================================== -->
+  // 1. Hydrostatic Pressure
+  function calculateHydrostatic() {
+    const mw = parseNum('hpMW');
+    const tvd = parseNum('hpTVD');
+    const hp = 0.052 * mw * tvd;
+    document.getElementById('hpResult').innerText = hp.toFixed(2) + " psi";
+  }
+
+  // 2. FIT / EMW
+  function calculateFIT() {
+    const mw = parseNum('fitMW');
+    const tvd = parseNum('fitTVD');
+    const surfaceP = parseNum('fitSurfacePressure');
+    const hydrostaticP = 0.052 * mw * tvd;
+    const totalP = hydrostaticP + surfaceP;
+    const emw = tvd > 0 ? totalP / (0.052 * tvd) : 0;
+    
+    document.getElementById('fitEMWResult').innerText = emw.toFixed(2) + " ppg";
+    document.getElementById('fitShoePressureResult').innerText = totalP.toFixed(2) + " psi";
+  }
+
+  // 3. Pore Pressure - Eaton
+  function calculateEaton() {
+    const obg = parseNum('eatonOBG');
+    const normalPG = parseNum('eatonNormalPG');
+    const dobs = parseNum('eatonDobs');
+    const dnorm = parseNum('eatonDnorm');
+    const tvd = parseNum('eatonTVD');
+    const n = parseNum('eatonN');
+
+    if (dnorm === 0) return;
+    const ppGradient = obg - (obg - normalPG) * Math.pow((dobs / dnorm), n);
+    const ppg = ppGradient / 0.052;
+    const psi = ppGradient * tvd;
+
+    document.getElementById('eatonPGResult').innerText = ppGradient.toFixed(4) + " psi/ft";
+    document.getElementById('eatonPPGResult').innerText = ppg.toFixed(2) + " ppg";
+    document.getElementById('eatonPSIResult').innerText = psi.toFixed(0) + " psi";
+  }
+
+  // 4. APL & ECD
+  function calculateAPL() {
+    const mw = parseNum('aplMW');
+    const pv = parseNum('aplPV');
+    const yp = parseNum('aplYP');
+    const q = parseNum('aplQ');
+    const dh = parseNum('aplDh');
+    const doPipe = parseNum('aplDo');
+    const l = parseNum('aplL');
+
+    const areaDiff = Math.pow(dh, 2) - Math.pow(doPipe, 2);
+    if (areaDiff <= 0) return;
+
+    const av = (24.5 * q) / areaDiff;
+    const apl = ((pv * av / (300 * (dh - doPipe))) + (yp / (225 * (dh - doPipe)))) * (l / 100);
+    const ecd = mw + (apl / (0.052 * l));
+
+    document.getElementById('aplAVResult').innerText = av.toFixed(2) + " ft/min";
+    document.getElementById('aplResult').innerText = apl.toFixed(2) + " psi";
+    document.getElementById('ecdResult').innerText = ecd.toFixed(2) + " ppg";
+  }
+
+  // 5. ROP
+  function calculateROP() {
+    const start = parseNum('ropStart');
+    const end = parseNum('ropEnd');
+    const time = parseNum('ropTime');
+    const unit = document.getElementById('ropUnit').value;
+    const timeUnit = document.getElementById('ropTimeUnit').value;
+
+    if (time <= 0) return;
+    let interval = end - start;
+    let intervalFt = unit === 'm' ? interval * 3.28084 : interval;
+    let intervalM = unit === 'ft' ? interval / 3.28084 : interval;
+    let timeHrs = timeUnit === 'min' ? time / 60 : time;
+
+    const ftHr = intervalFt / timeHrs;
+    const ftMin = ftHr / 60;
+    const mHr = intervalM / timeHrs;
+    const mMin = mHr / 60;
+
+    document.getElementById('ropInterval').innerText = interval.toFixed(2) + " " + unit;
+    document.getElementById('ropFtHr').innerText = ftHr.toFixed(2) + " ft/hr";
+    document.getElementById('ropFtMin').innerText = ftMin.toFixed(2) + " ft/min";
+    document.getElementById('ropMHr').innerText = mHr.toFixed(2) + " m/hr";
+    document.getElementById('ropMMin').innerText = mMin.toFixed(2) + " m/min";
+  }
+
+  // 6. Temperature Converter
+  function calculateTemperature() {
+    const val = parseNum('tempVal');
+    const unit = document.getElementById('tempUnit').value;
+    let c = 0, f = 0, k = 0;
+
+    if (unit === 'C') { c = val; f = (c * 9/5) + 32; k = c + 273.15; }
+    else if (unit === 'F') { f = val; c = (f - 32) * 5/9; k = c + 273.15; }
+    else if (unit === 'K') { k = val; c = k - 273.15; f = (c * 9/5) + 32; }
+
+    document.getElementById('tempC').innerText = c.toFixed(2) + " °C";
+    document.getElementById('tempF').innerText = f.toFixed(2) + " °F";
+    document.getElementById('tempK').innerText = k.toFixed(2) + " K";
+  }
+
+  // 7. Pressure Converter
+  function calculatePressureConverter() {
+    const val = parseNum('pressVal');
+    const unit = document.getElementById('pressUnit').value;
+    let psi = 0;
+
+    switch(unit) {
+      case 'psi': psi = val; break;
+      case 'bar': psi = val * 14.5038; break;
+      case 'kPa': psi = val * 0.145038; break;
+      case 'MPa': psi = val * 145.038; break;
+      case 'atm': psi = val * 14.6959; break;
+      case 'kgcm2': psi = val * 14.2233; break;
+    }
+
+    document.getElementById('pPSI').innerText = psi.toFixed(2) + " psi";
+    document.getElementById('pBar').innerText = (psi / 14.5038).toFixed(2) + " bar";
+    document.getElementById('pKPa').innerText = (psi / 0.145038).toFixed(2) + " kPa";
+    document.getElementById('pMPa').innerText = (psi / 145.038).toFixed(4) + " MPa";
+    document.getElementById('pAtm').innerText = (psi / 14.6959).toFixed(4) + " atm";
+    document.getElementById('pKgCm2').innerText = (psi / 14.2233).toFixed(4) + " kg/cm²";
+  }
+
+  // 8. Directional Survey
+  function addSurveyRow() {
+    const tbody = document.querySelectorAll('#surveyTable tbody')[0];
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td><input type="number" class="s-md" value="0"></td>
+      <td><input type="number" class="s-inc" value="0"></td>
+      <td><input type="number" class="s-azi" value="0"></td>
+      <td><button class="btn-remove" onclick="removeSurveyRow(this)">X</button></td>
+    `;
+    tbody.appendChild(tr);
+  }
+
+  function removeSurveyRow(btn) {
+    const row = btn.parentNode.parentNode;
+    if (document.querySelectorAll('#surveyTable tbody tr').length > 1) {
+      row.parentNode.removeChild(row);
+    }
+  }
+
+  function calculateDirectionalSurvey() {
+    const initMD = parseNum('dirInitMD');
+    const initTVD = parseNum('dirInitTVD');
+    const initN = parseNum('dirInitNorth');
+    const initE = parseNum('dirInitEast');
+    const targetAzi = parseNum('dirTargetAzi') * (Math.PI / 180);
+
+    const mdInputs = document.querySelectorAll('.s-md');
+    const incInputs = document.querySelectorAll('.s-inc');
+    const aziInputs = document.querySelectorAll('.s-azi');
+
+    let surveys = [];
+    for (let i = 0; i < mdInputs.length; i++) {
+      surveys.push({
+        md: parseFloat(mdInputs[i].value) || 0,
+        inc: (parseFloat(incInputs[i].value) || 0) * (Math.PI / 180),
+        azi: (parseFloat(aziInputs[i].value) || 0) * (Math.PI / 180)
+      });
+    }
+
+    let resultTbody = document.querySelectorAll('#dirResultTable tbody')[0];
+    resultTbody.innerHTML = '';
+
+    let curTVD = 0, curN = 0, curE = 0;
+    let lastDLS = 0;
+
+    for (let i = 0; i < surveys.length; i++) {
+      let s2 = surveys[i];
+      let deltaMD = 0, rf = 1, dogleg = 0, dls = 0;
+
+      if (i > 0) {
+        let s1 = surveys[i - 1];
+        deltaMD = s2.md - s1.md;
+
+        let cosBeta = Math.cos(s2.inc - s1.inc) - (Math.sin(s1.inc) * Math.sin(s2.inc) * (1 - Math.cos(s2.azi - s1.azi)));
+        cosBeta = Math.min(1, Math.max(-1, cosBeta));
+        dogleg = Math.acos(cosBeta);
+
+        if (dogleg !== 0) {
+          rf = (2 / dogleg) * Math.tan(dogleg / 2);
+        }
+
+        let deltaTVD = (deltaMD / 2) * (Math.cos(s1.inc) + Math.cos(s2.inc)) * rf;
+        let deltaN = (deltaMD / 2) * (Math.sin(s1.inc) * Math.cos(s1.azi) + Math.sin(s2.inc) * Math.cos(s2.azi)) * rf;
+        let deltaE = (deltaMD / 2) * (Math.sin(s1.inc) * Math.sin(s1.azi) + Math.sin(s2.inc) * Math.sin(s2.azi)) * rf;
+
+        curTVD += deltaTVD;
+        curN += deltaN;
+        curE += deltaE;
+
+        dls = deltaMD > 0 ? (dogleg * (180 / Math.PI) / deltaMD) * 100 : 0;
+        lastDLS = dls;
+      }
+
+      let actTVD = initTVD + curTVD;
+      let actN = initN + curN;
+      let actE = initE + curE;
+      let vs = actN * Math.cos(targetAzi) + actE * Math.sin(targetAzi);
+
+      let tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${s2.md.toFixed(2)}</td>
+        <td>${(s2.inc * 180 / Math.PI).toFixed(2)}</td>
+        <td>${(s2.azi * 180 / Math.PI).toFixed(2)}</td>
+        <td>${deltaMD.toFixed(2)}</td>
+        <td>${curTVD.toFixed(2)}</td>
+        <td>${actTVD.toFixed(2)}</td>
+        <td>${actN.toFixed(2)}</td>
+        <td>${actE.toFixed(2)}</td>
+        <td>${vs.toFixed(2)}</td>
+        <td>${(dogleg * 180 / Math.PI).toFixed(2)}</td>
+        <td>${rf.toFixed(4)}</td>
+        <td>${dls.toFixed(2)}</td>
+      `;
+      resultTbody.appendChild(tr);
+    }
+
+    let totalMD = surveys.length > 0 ? surveys[surveys.length - 1].md : 0;
+    let finalN = initN + curN;
+    let finalE = initE + curE;
+    let closureDist = Math.sqrt(finalN * finalN + finalE * finalE);
+    let closureAzi = Math.atan2(finalE, finalN) * (180 / Math.PI);
+    if (closureAzi < 0) closureAzi += 360;
+
+    document.getElementById('dirTotalMD').innerText = totalMD.toFixed(2) + " ft";
+    document.getElementById('dirRelTVD').innerText = curTVD.toFixed(2) + " ft";
+    document.getElementById('dirActTVD').innerText = (initTVD + curTVD).toFixed(2) + " ft";
+    document.getElementById('dirNorth').innerText = finalN.toFixed(2) + " ft N";
+    document.getElementById('dirEast').innerText = finalE.toFixed(2) + " ft E";
+    document.getElementById('dirVS').innerText = (finalN * Math.cos(targetAzi) + finalE * Math.sin(targetAzi)).toFixed(2) + " ft";
+    document.getElementById('dirClosureDist').innerText = closureDist.toFixed(2) + " ft";
+    document.getElementById('dirClosureAzi').innerText = closureAzi.toFixed(2) + "°";
+    document.getElementById('dirFinalDLS').innerText = lastDLS.toFixed(2) + " °/100 ft";
+  }
+
+<!-- MODUL 1: PUMP OUTPUT -->
+<div class="calculator-card">
+  <h3>Pump Output Calculator</h3>
+  
+  <label>Pump Type</label>
+  <select id="po_type">
+    <option value="triplex">Triplex</option>
+    <option value="duplex">Duplex</option>
+  </select>
+
+  <label>Liner Diameter (inch)</label>
+  <input type="number" id="po_liner" value="6.75" step="0.01">
+
+  <label>Stroke Length (inch)</label>
+  <input type="number" id="po_stroke" value="10">
+
+  <label>Pump Speed (SPM)</label>
+  <input type="number" id="po_spm" value="200">
+
+  <button onclick="calculatePumpOutput()">CALCULATE OUTPUT</button>
+
+  <div class="results">
+    <p>Displacement: <span id="res_disp">0.0000</span> bbl/stk</p>
+    <p>Theoretical Output: <span id="res_theo_gpm">0.00</span> gpm (<span id="res_theo_bpm">0.00</span> bbl/min)</p>
+    <p><strong>Actual Output: <span id="res_act_gpm">0.00</span> gpm (<span id="res_act_bpm">0.00</span> bbl/min)</strong></p>
+  </div>
+</div>
+
+<hr>
+
+<!-- MODUL 2: PUMP EFFICIENCY -->
+<div class="calculator-card">
+  <h3>Pump Efficiency Calculator</h3>
+  <p><small>Hitung efisiensi nyata berdasarkan hasil ukur mud pit / flow meter</small></p>
+
+  <label>Pump Type</label>
+  <select id="pe_type">
+    <option value="triplex">Triplex</option>
+    <option value="duplex">Duplex</option>
+  </select>
+
+  <label>Liner Diameter (inch)</label>
+  <input type="number" id="pe_liner" value="6.75">
+
+  <label>Stroke Length (inch)</label>
+  <input type="number" id="pe_stroke" value="10">
+
+  <label>Pump Speed (SPM)</label>
+  <input type="number" id="pe_spm" value="200">
+
+  <label>Actual Measured Flow (gpm)</label>
+  <input type="number" id="pe_act_gpm" placeholder="Contoh: 883">
+
+  <button onclick="calculatePumpEfficiency()">CALCULATE EFFICIENCY</button>
+
+  <div class="results">
+    <p>Theoretical Output: <span id="res_pe_theo">0.00</span> gpm</p>
+    <p><strong>Calculated Efficiency: <span id="res_pe_eff">0.00</span> %</strong></p>
+  </div>
+</div>
 
 <script>
+function calculatePumpOutput() {
+  const type = document.getElementById('po_type').value;
+  const D = parseFloat(document.getElementById('po_liner').value);
+  const L = parseFloat(document.getElementById('po_stroke').value);
+  const spm = parseFloat(document.getElementById('po_spm').value);
+  const eff = parseFloat(document.getElementById('po_eff').value) / 100;
 
-/* =====================================================
-   GENERAL
-===================================================== */
+  // Rumus dasar (Triplex = 3 cylinder single acting, Duplex = 2 cylinder double acting)
+  const factor = (type === 'triplex') ? 3 : 4; 
+  
+  // Volume per stroke (cu.in) = (pi/4) * D^2 * L * factor
+  const volPerStkIn3 = (Math.PI / 4) * Math.pow(D, 2) * L * factor;
+  
+  // Konversi (231 cu.in = 1 gal, 42 gal = 1 bbl)
+  const galPerStk = volPerStkIn3 / 231;
+  const bblPerStk = galPerStk / 42;
 
-function parseNum(id) {
+  const theoGpm = galPerStk * spm;
+  const theoBpm = theoGpm / 42;
 
-    const element = document.getElementById(id);
+  const actGpm = theoGpm * eff;
+  const actBpm = theoBpm * eff;
 
-    if (!element) {
-        return NaN;
-    }
-
-    return parseFloat(element.value);
+  document.getElementById('res_disp').innerText = bblPerStk.toFixed(4);
+  document.getElementById('res_theo_gpm').innerText = theoGpm.toFixed(2);
+  document.getElementById('res_theo_bpm').innerText = theoBpm.toFixed(2);
+  document.getElementById('res_act_gpm').innerText = actGpm.toFixed(2);
+  document.getElementById('res_act_bpm').innerText = actBpm.toFixed(2);
 }
 
+function calculatePumpEfficiency() {
+  const type = document.getElementById('pe_type').value;
+  const D = parseFloat(document.getElementById('pe_liner').value);
+  const L = parseFloat(document.getElementById('pe_stroke').value);
+  const spm = parseFloat(document.getElementById('pe_spm').value);
+  const actGpm = parseFloat(document.getElementById('pe_act_gpm').value);
 
-/* =====================================================
-   HYDROSTATIC
-===================================================== */
+  const factor = (type === 'triplex') ? 3 : 4;
+  const volPerStkIn3 = (Math.PI / 4) * Math.pow(D, 2) * L * factor;
+  const theoGpm = (volPerStkIn3 / 231) * spm;
 
-function calculateHydrostatic() {
+  const eff = (actGpm / theoGpm) * 100;
 
-    const mw = parseNum("mudWeightHydro");
-    const tvd = parseNum("tvdHydro");
-
-    if (
-        !Number.isFinite(mw) ||
-        !Number.isFinite(tvd) ||
-        mw <= 0 ||
-        tvd <= 0
-    ) {
-
-        document.getElementById("hydroResult").innerHTML =
-            '<span class="error">Input tidak valid</span>';
-
-        return;
-    }
-
-    const pressure =
-        0.052 * mw * tvd;
-
-    document.getElementById("hydroResult").innerText =
-        pressure.toFixed(2) + " psi";
+  document.getElementById('res_pe_theo').innerText = theoGpm.toFixed(2);
+  document.getElementById('res_pe_eff').innerText = eff.toFixed(2);
 }
-
-
-/* =====================================================
-   FIT / EMW
-===================================================== */
-
-function calculateFIT() {
-
-    const mw =
-        parseNum("mudWeightFIT");
-
-    const shoeTVD =
-        parseNum("shoeTVD");
-
-    const surfacePressure =
-        parseNum("surfacePressure");
-
-
-    if (
-        !Number.isFinite(mw) ||
-        !Number.isFinite(shoeTVD) ||
-        !Number.isFinite(surfacePressure) ||
-        mw <= 0 ||
-        shoeTVD <= 0 ||
-        surfacePressure < 0
-    ) {
-
-        document.getElementById("fitResult").innerHTML =
-            '<span class="error">Input tidak valid</span>';
-
-        document.getElementById("shoePressure").innerText =
-            "--";
-
-        return;
-    }
-
-
-    const hydrostaticPressure =
-        0.052 * mw * shoeTVD;
-
-    const totalPressure =
-        hydrostaticPressure + surfacePressure;
-
-    const emw =
-        totalPressure /
-        (0.052 * shoeTVD);
-
-
-    document.getElementById("fitResult").innerText =
-        emw.toFixed(2) + " ppg";
-
-    document.getElementById("shoePressure").innerText =
-        totalPressure.toFixed(2) + " psi";
-}
-
-
-/* =====================================================
-   PORE PRESSURE
-===================================================== */
-
-function calculatePorePressure() {
-
-    const S =
-        parseNum("obGradient");
-
-    const Pn =
-        parseNum("normalGradient");
-
-    const d =
-        parseNum("observedD");
-
-    const dn =
-        parseNum("normalD");
-
-    const tvd =
-        parseNum("ppTVD");
-
-    const exponent =
-        parseNum("eatonExponent");
-
-
-    if (
-        ![
-            S,
-            Pn,
-            d,
-            dn,
-            tvd,
-            exponent
-        ].every(Number.isFinite)
-        ||
-        d <= 0
-        ||
-        dn <= 0
-        ||
-        tvd <= 0
-    ) {
-
-        alert(
-            "Bro, semua input harus diisi dengan angka yang valid."
-        );
-
-        return;
-    }
-
-
-    const ppGradient =
-        S -
-        (
-            (S - Pn) *
-            Math.pow(d / dn, exponent)
-        );
-
-
-    const ppPpg =
-        ppGradient / 0.052;
-
-
-    const ppPsi =
-        ppGradient * tvd;
-
-
-    document.getElementById("ppGradient").innerText =
-        ppGradient.toFixed(4) +
-        " psi/ft";
-
-
-    document.getElementById("ppPpg").innerText =
-        ppPpg.toFixed(2) +
-        " ppg";
-
-
-    document.getElementById("ppPsi").innerText =
-        Math.round(ppPsi) +
-        " psi";
-}
-
-
-/* =====================================================
-   APL & ECD
-===================================================== */
-
-function calculateAPLAndECD() {
-
-    const mw =
-        parseNum("mw");
-
-    const pv =
-        parseNum("pv");
-
-    const yp =
-        parseNum("yp");
-
-    const q =
-        parseNum("flowRate");
-
-    const dh =
-        parseNum("holeId");
-
-    const doDiameter =
-        parseNum("pipeOd");
-
-    const l =
-        parseNum("length");
-
-
-    if (
-        ![
-            mw,
-            pv,
-            yp,
-            q,
-            dh,
-            doDiameter,
-            l
-        ].every(Number.isFinite)
-        ||
-        dh <= doDiameter
-        ||
-        dh <= 0
-        ||
-        l <= 0 ||
-        q <= 0
-    ) {
-
-        alert(
-            "Input APL/ECD tidak valid. Pastikan Hole ID > Pipe OD."
-        );
-
-        return;
-    }
-
-
-    const v =
-        (24.5 * q) /
-        (
-            Math.pow(dh, 2) -
-            Math.pow(doDiameter, 2)
-        );
-
-
-    const apl =
-        (
-            (pv * v) +
-            (300 * yp)
-        ) *
-        l /
-        (
-            30000 *
-            (dh - doDiameter)
-        );
-
-
-    const ecd =
-        mw +
-        (
-            apl /
-            (0.052 * l)
-        );
-
-
-    document.getElementById("avResult").innerText =
-        v.toFixed(2) +
-        " ft/min";
-
-
-    document.getElementById("aplResult").innerText =
-        apl.toFixed(2) +
-        " psi";
-
-
-    document.getElementById("ecdResult").innerText =
-        ecd.toFixed(2) +
-        " ppg";
-}
-
-
-/* =====================================================
-   ROP
-===================================================== */
-
-function calculateROP() {
-
-    const startDepth =
-        parseNum("ropStartDepth");
-
-    const endDepth =
-        parseNum("ropEndDepth");
-
-    const drillingTime =
-        parseNum("ropTime");
-
-    const depthUnit =
-        document.getElementById(
-            "ropDepthUnit"
-        ).value;
-
-    const timeUnit =
-        document.getElementById(
-            "ropTimeUnit"
-        ).value;
-
-
-    if (
-        ![
-            startDepth,
-            endDepth,
-            drillingTime
-        ].every(Number.isFinite)
-        ||
-        drillingTime <= 0
-    ) {
-
-        alert(
-            "Semua input ROP harus diisi dengan angka yang valid."
-        );
-
-        return;
-    }
-
-
-    const drilledInterval =
-        Math.abs(
-            endDepth - startDepth
-        );
-
-
-    if (drilledInterval <= 0) {
-
-        alert(
-            "Start Depth dan End Depth tidak boleh sama."
-        );
-
-        return;
-    }
-
-
-    let intervalFt;
-    let intervalM;
-
-
-    if (depthUnit === "ft") {
-
-        intervalFt =
-            drilledInterval;
-
-        intervalM =
-            drilledInterval *
-            0.3048;
-
-    } else {
-
-        intervalM =
-            drilledInterval;
-
-        intervalFt =
-            drilledInterval /
-            0.3048;
-    }
-
-
-    let timeHr;
-    let timeMin;
-
-
-    if (timeUnit === "hr") {
-
-        timeHr =
-            drillingTime;
-
-        timeMin =
-            drillingTime * 60;
-
-    } else {
-
-        timeMin =
-            drillingTime;
-
-        timeHr =
-            drillingTime / 60;
-    }
-
-
-    document.getElementById(
-        "ropInterval"
-    ).innerText =
-        drilledInterval.toFixed(2) +
-        " " +
-        depthUnit;
-
-
-    document.getElementById(
-        "ropFtHr"
-    ).innerText =
-        (
-            intervalFt / timeHr
-        ).toFixed(2) +
-        " ft/hr";
-
-
-    document.getElementById(
-        "ropFtMin"
-    ).innerText =
-        (
-            intervalFt / timeMin
-        ).toFixed(2) +
-        " ft/min";
-
-
-    document.getElementById(
-        "ropMHr"
-    ).innerText =
-        (
-            intervalM / timeHr
-        ).toFixed(2) +
-        " m/hr";
-
-
-    document.getElementById(
-        "ropMMin"
-    ).innerText =
-        (
-            intervalM / timeMin
-        ).toFixed(2) +
-        " m/min";
-}
-
-
-/* =====================================================
-   TEMPERATURE
-===================================================== */
-
-function calculateTemperature() {
-
-    const temperature =
-        parseNum("temperatureValue");
-
-    const unit =
-        document.getElementById(
-            "temperatureUnit"
-        ).value;
-
-
-    if (!Number.isFinite(temperature)) {
-
-        alert(
-            "Masukkan nilai temperatur yang valid."
-        );
-
-        return;
-    }
-
-
-    let celsius;
-    let fahrenheit;
-    let kelvin;
-
-
-    if (unit === "C") {
-
-        celsius =
-            temperature;
-
-        fahrenheit =
-            celsius * 9 / 5 + 32;
-
-        kelvin =
-            celsius + 273.15;
-
-    }
-
-
-    else if (unit === "F") {
-
-        fahrenheit =
-            temperature;
-
-        celsius =
-            (fahrenheit - 32) * 5 / 9;
-
-        kelvin =
-            celsius + 273.15;
-
-    }
-
-
-    else {
-
-        kelvin =
-            temperature;
-
-
-        if (kelvin < 0) {
-
-            alert(
-                "Temperature tidak boleh di bawah 0 Kelvin."
-            );
-
-            return;
-        }
-
-
-        celsius =
-            kelvin - 273.15;
-
-        fahrenheit =
-            celsius * 9 / 5 + 32;
-    }
-
-
-    document.getElementById(
-        "tempC"
-    ).innerText =
-        celsius.toFixed(2) +
-        " °C";
-
-
-    document.getElementById(
-        "tempF"
-    ).innerText =
-        fahrenheit.toFixed(2) +
-        " °F";
-
-
-    document.getElementById(
-        "tempK"
-    ).innerText =
-        kelvin.toFixed(2) +
-        " K";
-}
-
-
-/* =====================================================
-   PRESSURE CONVERTER
-===================================================== */
-
-function calculatePressureConverter() {
-
-    const pressure =
-        parseNum("pressureValue");
-
-    const unit =
-        document.getElementById(
-            "pressureUnit"
-        ).value;
-
-
-    if (!Number.isFinite(pressure)) {
-
-        alert(
-            "Masukkan nilai pressure yang valid."
-        );
-
-        return;
-    }
-
-
-    const toPsi = {
-
-        psi: 1,
-
-        bar:
-            14.5037738,
-
-        kPa:
-            0.145037738,
-
-        MPa:
-            145.037738,
-
-        atm:
-            14.6959488,
-
-        kgcm2:
-            14.2233433
-    };
-
-
-    const psi =
-        pressure *
-        toPsi[unit];
-
-
-    const bar =
-        psi *
-        0.0689475729;
-
-
-    const kPa =
-        psi *
-        6.89475729;
-
-
-    const MPa =
-        psi *
-        0.00689475729;
-
-
-    const atm =
-        psi *
-        0.0680459639;
-
-
-    const kgcm2 =
-        psi *
-        0.0703069578;
-
-
-    document.getElementById(
-        "pressurePsi"
-    ).innerText =
-        psi.toFixed(2) +
-        " psi";
-
-
-    document.getElementById(
-        "pressureBar"
-    ).innerText =
-        bar.toFixed(2) +
-        " bar";
-
-
-    document.getElementById(
-        "pressureKpa"
-    ).innerText =
-        kPa.toFixed(2) +
-        " kPa";
-
-
-    document.getElementById(
-        "pressureMpa"
-    ).innerText =
-        MPa.toFixed(4) +
-        " MPa";
-
-
-    document.getElementById(
-        "pressureAtm"
-    ).innerText =
-        atm.toFixed(4) +
-        " atm";
-
-
-    document.getElementById(
-        "pressureKgcm2"
-    ).innerText =
-        kgcm2.toFixed(4) +
-        " kg/cm²";
-}
-
-
-/* =====================================================
-   ADD DD SURVEY
-===================================================== */
-
-function addDDRow() {
-
-    const tbody =
-        document.getElementById(
-            "ddSurveyBody"
-        );
-
-
-    const row =
-        document.createElement("tr");
-
-
-    row.innerHTML = `
-
-        <td>
-
-            <input
-                type="number"
-                class="dd-md"
-                step="any"
-                placeholder="MD"
-            >
-
-        </td>
-
-
-        <td>
-
-            <input
-                type="number"
-                class="dd-inc"
-                step="any"
-                placeholder="Inc"
-            >
-
-        </td>
-
-
-        <td>
-
-            <input
-                type="number"
-                class="dd-azi"
-                step="any"
-                placeholder="Azi"
-            >
-
-        </td>
-
-
-        <td>
-
-            <button
-                class="small"
-                onclick="removeDDRow(this)"
-            >
-                X
-            </button>
-
-        </td>
-    `;
-
-
-    tbody.appendChild(row);
-}
-
-
-/* =====================================================
-   REMOVE DD SURVEY
-===================================================== */
-
-function removeDDRow(button) {
-
-    const tbody =
-        document.getElementById(
-            "ddSurveyBody"
-        );
-
-
-    if (tbody.rows.length <= 1) {
-
-        alert(
-            "Minimal harus ada 1 survey station."
-        );
-
-        return;
-    }
-
-
-    button
-        .closest("tr")
-        .remove();
-}
-
-
-/* =====================================================
-   AZIMUTH NORMALIZATION
-===================================================== */
-
-function normalizeAzimuth(angle) {
-
-    angle %= 360;
-
-
-    if (angle < 0) {
-
-        angle += 360;
-    }
-
-
-    return angle;
-}
-
-
-/* =====================================================
-   VERTICAL SECTION
-===================================================== */
-
-function calculateVS(
-    north,
-    east,
-    referenceAzimuth
-) {
-
-    const azimuthRad =
-        referenceAzimuth *
-        Math.PI /
-        180;
-
-
-    return (
-        north *
-        Math.cos(azimuthRad)
-    )
-    +
-    (
-        east *
-        Math.sin(azimuthRad)
-    );
-}
-
-
-/* =====================================================
-   DIRECTIONAL DRILLING
-   MINIMUM CURVATURE
-===================================================== */
-
-function calculateDirectionalDrilling() {
-
-    const initialMD =
-        parseNum("ddInitialMD");
-
-    const initialTVD =
-        parseNum("ddInitialTVD");
-
-    const initialNorth =
-        parseNum("ddInitialNorth");
-
-    const initialEast =
-        parseNum("ddInitialEast");
-
-    const referenceAzimuth =
-        parseNum("referenceAzimuth");
-
-
-    if (
-        ![
-            initialMD,
-            initialTVD,
-            initialNorth,
-            initialEast,
-            referenceAzimuth
-        ].every(Number.isFinite)
-    ) {
-
-        alert(
-            "Initial survey dan Reference Azimuth harus diisi dengan angka yang valid."
-        );
-
-        return;
-    }
-
-
-    if (
-        initialMD < 0 ||
-        referenceAzimuth < 0 ||
-        referenceAzimuth >= 360
-    ) {
-
-        alert(
-            "Initial MD tidak boleh negatif dan azimuth harus 0° sampai <360°."
-        );
-
-        return;
-    }
-
-
-    const mdInputs =
-        document.querySelectorAll(
-            ".dd-md"
-        );
-
-    const incInputs =
-        document.querySelectorAll(
-            ".dd-inc"
-        );
-
-    const aziInputs =
-        document.querySelectorAll(
-            ".dd-azi"
-        );
-
-
-    const surveys = [];
-
-
-    for (
-        let i = 0;
-        i < mdInputs.length;
-        i++
-    ) {
-
-        const md =
-            parseFloat(
-                mdInputs[i].value
-            );
-
-        const inc =
-            parseFloat(
-                incInputs[i].value
-            );
-
-        const azi =
-            parseFloat(
-                aziInputs[i].value
-            );
-
-
-        if (
-            ![
-                md,
-                inc,
-                azi
-            ].every(Number.isFinite)
-        ) {
-
-            alert(
-                "Semua survey station harus diisi dengan angka yang valid."
-            );
-
-            return;
-        }
-
-
-        if (md < initialMD) {
-
-            alert(
-                "MD survey tidak boleh lebih kecil dari Initial MD."
-            );
-
-            return;
-        }
-
-
-        if (
-            inc < 0 ||
-            inc > 180
-        ) {
-
-            alert(
-                "Inclination harus 0° sampai 180°."
-            );
-
-            return;
-        }
-
-
-        if (
-            azi < 0 ||
-            azi >= 360
-        ) {
-
-            alert(
-                "Azimuth harus 0° sampai <360°."
-            );
-
-            return;
-        }
-
-
-        surveys.push({
-            md,
-            inc,
-            azi
-        });
-    }
-
-
-    surveys.sort(
-        (a, b) =>
-            a.md - b.md
-    );
-
-
-    for (
-        let i = 1;
-        i < surveys.length;
-        i++
-    ) {
-
-        if (
-            surveys[i].md <=
-            surveys[i - 1].md
-        ) {
-
-            alert(
-                "MD survey harus meningkat dan tidak boleh sama."
-            );
-
-            return;
-        }
-    }
-
-
-    const resultBody =
-        document.getElementById(
-            "ddResultBody"
-        );
-
-
-    resultBody.innerHTML = "";
-
-
-    let relativeTVD = 0;
-
-    let north =
-        initialNorth;
-
-    let east =
-        initialEast;
-
-    let finalDLS = 0;
-
-
-    const first =
-        surveys[0];
-
-
-    if (
-        first.md <
-        initialMD
-    ) {
-
-        alert(
-            "First survey MD tidak boleh lebih kecil dari Initial MD."
-        );
-
-        return;
-    }
-
-
-    /* =========================================
-       FIRST SURVEY
-    ========================================= */
-
-    const firstRow =
-        document.createElement("tr");
-
-
-    firstRow.innerHTML = `
-
-        <td>
-            ${first.md.toFixed(2)}
-        </td>
-
-        <td>
-            ${first.inc.toFixed(2)}
-        </td>
-
-        <td>
-            ${first.azi.toFixed(2)}
-        </td>
-
-        <td>
-            ${(first.md - initialMD).toFixed(2)}
-        </td>
-
-        <td>
-            0.00
-        </td>
-
-        <td>
-            ${initialTVD.toFixed(2)}
-        </td>
-
-        <td>
-            ${Math.abs(north).toFixed(2)}
-            ${north >= 0 ? "N" : "S"}
-        </td>
-
-        <td>
-            ${Math.abs(east).toFixed(2)}
-            ${east >= 0 ? "E" : "W"}
-        </td>
-
-        <td>
-            0.00
-        </td>
-
-        <td>
-            0.0000°
-        </td>
-
-        <td>
-            1.000000
-        </td>
-
-        <td>
-            0.0000
-        </td>
-
-    `;
-
-
-    resultBody.appendChild(
-        firstRow
-    );
-
-
-    let previous =
-        first;
-
-
-    /* =========================================
-       SURVEY INTERVALS
-    ========================================= */
-
-    for (
-        let i = 1;
-        i < surveys.length;
-        i++
-    ) {
-
-        const current =
-            surveys[i];
-
-
-        const deltaMD =
-            current.md -
-            previous.md;
-
-
-        const inc1 =
-            previous.inc *
-            Math.PI /
-            180;
-
-
-        const inc2 =
-            current.inc *
-            Math.PI /
-            180;
-
-
-        const azi1 =
-            previous.azi *
-            Math.PI /
-            180;
-
-
-        const azi2 =
-            current.azi *
-            Math.PI /
-            180;
-
-
-        /* ===============================
-           DOGLEG ANGLE
-        =============================== */
-
-        let doglegCos =
-
-            Math.cos(inc1) *
-            Math.cos(inc2)
-
-            +
-
-            Math.sin(inc1) *
-            Math.sin(inc2) *
-            Math.cos(
-                azi2 - azi1
-            );
-
-
-        doglegCos =
-            Math.max(
-                -1,
-                Math.min(
-                    1,
-                    doglegCos
-                )
-            );
-
-
-        const beta =
-            Math.acos(
-                doglegCos
-            );
-
-
-        const doglegDegrees =
-            beta *
-            180 /
-            Math.PI;
-
-
-        /* ===============================
-           RATIO FACTOR
-        =============================== */
-
-        let RF = 1;
-
-
-        if (
-            Math.abs(beta) >
-            1e-10
-        ) {
-
-            RF =
-                (
-                    2 / beta
-                )
-                *
-                Math.tan(
-                    beta / 2
-                );
-        }
-
-
-        /* ===============================
-           MINIMUM CURVATURE
-        =============================== */
-
-        const deltaTVD =
-
-            (
-                deltaMD / 2
-            )
-
-            *
-
-            (
-                Math.cos(inc1) +
-                Math.cos(inc2)
-            )
-
-            *
-
-            RF;
-
-
-        const deltaNorth =
-
-            (
-                deltaMD / 2
-            )
-
-            *
-
-            (
-                Math.sin(inc1) *
-                Math.cos(azi1)
-
-                +
-
-                Math.sin(inc2) *
-                Math.cos(azi2)
-            )
-
-            *
-
-            RF;
-
-
-        const deltaEast =
-
-            (
-                deltaMD / 2
-            )
-
-            *
-
-            (
-                Math.sin(inc1) *
-                Math.sin(azi1)
-
-                +
-
-                Math.sin(inc2) *
-                Math.sin(azi2)
-            )
-
-            *
-
-            RF;
-
-
-        /* ===============================
-           UPDATE POSITION
-        =============================== */
-
-        relativeTVD +=
-            deltaTVD;
-
-
-        north +=
-            deltaNorth;
-
-
-        east +=
-            deltaEast;
-
-
-        /* ===============================
-           DLS
-        =============================== */
-
-        const dls =
-
-            (
-                doglegDegrees /
-                deltaMD
-            )
-            *
-            100;
-
-
-        finalDLS =
-            dls;
-
-
-        /* ===============================
-           VERTICAL SECTION
-        =============================== */
-
-        const vs =
-            calculateVS(
-                north -
-                    initialNorth,
-
-                east -
-                    initialEast,
-
-                referenceAzimuth
-            );
-
-
-        /* ===============================
-           RESULT ROW
-        =============================== */
-
-        const row =
-            document.createElement("tr");
-
-
-        row.innerHTML = `
-
-            <td>
-                ${current.md.toFixed(2)}
-            </td>
-
-            <td>
-                ${current.inc.toFixed(2)}
-            </td>
-
-            <td>
-                ${current.azi.toFixed(2)}
-            </td>
-
-            <td>
-                ${deltaMD.toFixed(2)}
-            </td>
-
-            <td>
-                ${relativeTVD.toFixed(2)}
-            </td>
-
-            <td>
-                ${(initialTVD + relativeTVD).toFixed(2)}
-            </td>
-
-            <td>
-                ${Math.abs(north).toFixed(2)}
-                ${north >= 0 ? "N" : "S"}
-            </td>
-
-            <td>
-                ${Math.abs(east).toFixed(2)}
-                ${east >= 0 ? "E" : "W"}
-            </td>
-
-            <td>
-                ${vs.toFixed(2)}
-            </td>
-
-            <td>
-                ${doglegDegrees.toFixed(4)}°
-            </td>
-
-            <td>
-                ${RF.toFixed(6)}
-            </td>
-
-            <td>
-                ${dls.toFixed(4)}
-            </td>
-
-        `;
-
-
-        resultBody.appendChild(
-            row
-        );
-
-
-        previous =
-            current;
-    }
-
-
-    /* =========================================
-       FINAL POSITION
-    ========================================= */
-
-    const last =
-        surveys[
-            surveys.length - 1
-        ];
-
-
-    const closureNorth =
-        north -
-        initialNorth;
-
-
-    const closureEast =
-        east -
-        initialEast;
-
-
-    /* =========================================
-       CLOSURE DISTANCE
-    ========================================= */
-
-    const closureDistance =
-
-        Math.sqrt(
-
-            Math.pow(
-                closureNorth,
-                2
-            )
-
-            +
-
-            Math.pow(
-                closureEast,
-                2
-            )
-
-        );
-
-
-    /* =========================================
-       CLOSURE AZIMUTH
-    ========================================= */
-
-    const closureAzimuth =
-
-        normalizeAzimuth(
-
-            Math.atan2(
-                closureEast,
-                closureNorth
-            )
-            *
-            180 /
-            Math.PI
-
-        );
-
-
-    /* =========================================
-       FINAL VS
-    ========================================= */
-
-    const verticalSection =
-
-        calculateVS(
-
-            closureNorth,
-            closureEast,
-            referenceAzimuth
-
-        );
-
-
-    /* =========================================
-       DISPLAY RESULTS
-    ========================================= */
-
-    document.getElementById(
-        "ddTotalMD"
-    ).innerText =
-
-        last.md.toFixed(2)
-        +
-        " ft";
-
-
-    document.getElementById(
-        "ddRelativeTVD"
-    ).innerText =
-
-        relativeTVD.toFixed(2)
-        +
-        " ft";
-
-
-    document.getElementById(
-        "ddTVD"
-    ).innerText =
-
-        (
-            initialTVD +
-            relativeTVD
-        ).toFixed(2)
-        +
-        " ft";
-
-
-    document.getElementById(
-        "ddNorth"
-    ).innerText =
-
-        Math.abs(
-            north
-        ).toFixed(2)
-
-        +
-
-        (
-            north >= 0
-                ? " ft N"
-                : " ft S"
-        );
-
-
-    document.getElementById(
-        "ddEast"
-    ).innerText =
-
-        Math.abs(
-            east
-        ).toFixed(2)
-
-        +
-
-        (
-            east >= 0
-                ? " ft E"
-                : " ft W"
-        );
-
-
-    document.getElementById(
-        "ddVS"
-    ).innerText =
-
-        Math.abs(
-            verticalSection
-        ).toFixed(2)
-
-        +
-
-        (
-            verticalSection >= 0
-                ? " ft"
-                : " ft opposite"
-        );
-
-
-    document.getElementById(
-        "ddClosureDistance"
-    ).innerText =
-
-        closureDistance.toFixed(2)
-        +
-        " ft";
-
-
-    document.getElementById(
-        "ddClosureAzimuth"
-    ).innerText =
-
-        closureAzimuth.toFixed(2)
-        +
-        "°";
-
-
-    document.getElementById(
-        "ddFinalDLS"
-    ).innerText =
-
-        finalDLS.toFixed(4)
-        +
-        " °/100 ft";
-}
-
 </script>
-
-</body>
-</html>
